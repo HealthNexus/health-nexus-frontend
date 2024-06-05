@@ -1,6 +1,6 @@
 <template>
     <q-page padding class="column flex-center">
-      <form action="">
+      <form @submit.prevent="submitForm">
         <q-input
           v-model="name"
           type="text"
@@ -75,15 +75,49 @@
               </q-btn>
             </template>
           </q-input>
+          <q-btn type="submit" label="Submit" color="primary" />
+          <q-spinner v-if="loading" color="primary" />
       </form>
     </q-page>
+    <pre>
+      {{ resp }}
+    </pre>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import axios, { AxiosError } from 'axios';
+import { useRouter } from 'vue-router';
+
 let email = ref('');
 let password = ref('');
 let visible = ref(false);
 let name = ref('My name');
 let password_confirmation = ref('');
+let resp = ref('');
+let loading = ref(false);
+const router = useRouter();
+
+const submitForm = async () => {
+  try {
+    loading.value = true;
+    const response = await axios.post('http://localhost:8000/api/register', {
+      name: name.value,
+      email: email.value,
+      password: password.value,
+      password_confirmation: password_confirmation.value
+    });
+    console.log('Form submitted successfully:', response.data);
+    router.push('/signin');
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      console.error('Error submitting form:', axiosError.response?.data);
+    } else {
+      console.error('Error submitting form:', error);
+    }
+  }
+  loading.value = false;
+};
+
 </script>
