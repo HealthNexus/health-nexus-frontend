@@ -1,19 +1,16 @@
 <template>
   <q-layout view="hHh lpR fFf">
 
-    <q-header elevated class="bg-primary text-white" height-hint="98">
+    <q-header elevated class="bg-positive text-white" height-hint="98">
       <q-toolbar>
         <q-toolbar-title>
-          <q-avatar>
-            <h5>HealthNexus</h5>
-          </q-avatar>
-          Title
+          HealthNexus
         </q-toolbar-title>
       </q-toolbar>
 
       <q-tabs align="left">
-        <q-route-tab to="/page1" label="Page One" />
-        <q-route-tab to="/page2" label="Page Two" />
+        <q-route-tab to="/signin" label="sign in" />
+        <q-route-tab to="/signup" label="sign up" />
         <q-route-tab to="/page3" label="Page Three" />
       </q-tabs>
     </q-header>
