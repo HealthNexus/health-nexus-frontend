@@ -1,21 +1,49 @@
 <template>
-  <q-page class="flex flex-center">
-    <q-card style="max-width: 500px;">
-     <q-card-section horizontal>
-       <q-image>
-          <img src="https://b" alt="My name">
-       </q-image>
-       <q-card-section>
-        {{name}} Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam placeat molestias doloribus reprehenderit tempora enim praesentium consectetur deleniti sunt reiciendis accusantium atque beatae eligendi, ratione quos officiis aut labore ad.
-       </q-card-section>
-     </q-card-section>
+  <q-page class="flex justify-around">
+
+    <q-card class="my-card" style="max-width: 500px; height:fit-content"
+      v-for="post in postStore.posts"
+      :key="post.id"
+    >
+      <q-img src="https://cdn.quasar.dev/img/parallax2.jpg"
+        :ratio="16/9"
+      >
+        <div class="absolute-bottom text-h6">
+          {{ post.title }}
+        </div>
+      </q-img>
+
+      <q-card-section>
+        {{ post.body }}
+      </q-card-section>
+     <div class="flex justify-end">
+      <q-btn flat>
+        <q-icon name="keyboard_double_arrow_right" @click="viewPost(post.id)"/>
+      </q-btn>
+     </div>
     </q-card>
+
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-//import centeredContainer from '../components/CenteredContainer.vue';
+import { onMounted } from 'vue';
+// import axiosInstance from 'src/axios';
+import { usePostStore } from 'src/stores/Posts';
 
-let name = ref('My name');
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+
+const postStore = usePostStore();
+
+const viewPost = async (id: number)=>{
+  router.push(`posts/${id}`)
+}
+
+onMounted(() => {
+  postStore.fetchPosts();
+
+});
 </script>

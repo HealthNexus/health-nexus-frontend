@@ -8,8 +8,16 @@ const routes: RouteRecordRaw[] = [
       { path: '', component: () => import('pages/IndexPage.vue') },
       { path: 'signup', component: () => import('pages/signUpPage.vue') },
       { path: 'signin', component: () => import('pages/signInPage.vue') },
-      { path: 'dashboard', component: () => import('pages/signInPage.vue') },
+      { path: 'dashboard', component: () => import('pages/userDashboard.vue') },
     ],
+  },
+
+  {
+    path: '/posts/',
+    component: () => import('layouts/PostLayout.vue'),
+    children: [
+      {path: ':id', component: ()=> import('pages/PostPage.vue') }
+    ]
   },
 
   // Always leave this as last one,

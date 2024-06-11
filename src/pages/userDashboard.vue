@@ -14,7 +14,7 @@
               <q-item-section>
                 <q-item-label header>
                   <q-icon name="person" />
-                  Profile
+                  Profile: {{ authStore.user?.name }}
                 </q-item-label>
               </q-item-section>
               <q-item-section side>
@@ -47,4 +47,12 @@
         </q-card-section>
       </q-card>
     </q-page-container>
+  </q-page>
 </template>
+
+<script setup lang="ts">
+  import { useAuthStore } from '../stores/auth';
+
+  const authStore = useAuthStore();
+
+</script>
