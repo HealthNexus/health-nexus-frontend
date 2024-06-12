@@ -1,22 +1,15 @@
 <template>
-  <q-page class="flex justify-around">
-
-    <q-card class="my-card" style="max-width: 700px; height:fit-content">
-      <q-img src="/icons/favicon-128x128.png">
-        <q-btn flat class="bg-primary" @click="router.push('/')">
-            back
-        </q-btn>
-        <div class="absolute-bottom text-h6">
-          {{ postStore.post?.title }}
-        </div>
-      </q-img>
-
-      <q-card-section>
-        {{ postStore.post?.body }}
-      </q-card-section>
-    </q-card>
-
-  </q-page>
+  <q-page>
+     <div class="grid justify-around mt-5 gap-3 sm:grid-flow-col">
+      <div class="bg-red-500 ">
+        <img src="/icons/favicon-128x128.png" class="self-center"/>
+      </div>
+      <div class="bg-green">
+        <h1 class="font-semibold text-center text-xl"> {{ postStore.post?.title }}</h1>
+        <div>{{ postStore.post?.body }}</div>
+      </div>
+     </div>
+   </q-page>
 </template>
 
 <script setup lang="ts">

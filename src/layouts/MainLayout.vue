@@ -11,6 +11,7 @@
       <q-tabs align="left">
         <q-route-tab to="/signin" label="sign in" />
         <q-route-tab to="/signup" label="sign up" />
+        <q-route-tab to="/home/posts" label="posts" />
         <q-route-tab to="/dashboard" label="dashboard" />
       </q-tabs>
     </q-header>
