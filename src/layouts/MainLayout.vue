@@ -9,10 +9,10 @@
       </q-toolbar>
 
       <q-tabs align="left">
-        <q-route-tab to="/signin" label="sign in" />
-        <q-route-tab to="/signup" label="sign up" />
-        <q-route-tab to="/home/posts" label="posts" />
-        <q-route-tab to="/dashboard" label="dashboard" />
+        <q-route-tab :to="{name:'signin'}" label="sign in" />
+        <q-route-tab :to="{name:'signup'}" label="sign up" />
+        <q-route-tab :to="{name:'posts'}" label="posts" />
+        <q-route-tab :to="{name:'dashboard'}" label="dashboard" />
       </q-tabs>
     </q-header>
 

@@ -5,11 +5,10 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/IndexPage.vue') },
-      { path: '/home/posts', component: () => import('pages/IndexPage.vue') },
-      { path: 'signup', component: () => import('pages/signUpPage.vue') },
-      { path: 'signin', component: () => import('pages/signInPage.vue') },
-      { path: 'dashboard', component: () => import('pages/userDashboard.vue') },
+      { path: '', component: () => import('pages/IndexPage.vue'), name:'home' },
+      { path: 'signup', name:'signup', component: () => import('pages/signUpPage.vue') },
+      { path: 'signin', name:'signin', component: () => import('pages/signInPage.vue') },
+      { path: 'dashboard', name:'dashboard', component: () => import('pages/userDashboard.vue') },
     ],
   },
 
@@ -17,7 +16,8 @@ const routes: RouteRecordRaw[] = [
     path: '/posts/',
     component: () => import('layouts/PostLayout.vue'),
     children: [
-      {path: ':id', component: ()=> import('pages/PostPage.vue') }
+      { path: '', component: () => import('pages/IndexPage.vue'), name:'posts' },
+      {path: ':id', name:'post', component: ()=> import('pages/PostPage.vue') }
     ]
   },
 
