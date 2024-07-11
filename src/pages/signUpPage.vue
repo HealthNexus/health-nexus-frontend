@@ -1,82 +1,84 @@
 <template>
-  <q-page padding>
+  <q-page padding class="flex content-center justify-center ">
     <!-- content -->
-    <div class="md:grid md:grid-cols-2 md:gap-5 content-center" style="height: 80vh">
-      <form @click.prevent="submitForm">
-        <h2 class="text-center font-semibold text-xl">Create an account</h2>
-        <!-- Name -->
-        <q-input
-          v-model="name"
-          for="name"
-          label="Name"
-          aria-placeholder="Name"
-        >
-          <template v-slot:prepend>
-            <q-icon name="person" class="text-black" />
-          </template>
-        </q-input>
+      <div class="md:grid md:grid-cols-2 md:gap-5 content-center justify-center md:w-2/3" style="height:100%">
+        <form @submit.prevent="submitForm">
+          <h2 class="text-center font-semibold text-xl">Create an account</h2>
+          <!-- Name -->
+          <q-input
+            v-model="name"
+            for="name"
+            label="Name"
+            aria-placeholder="Name"
+          >
+            <template v-slot:prepend>
+              <q-icon name="person" class="text-black" />
+            </template>
+          </q-input>
 
-        <!-- Email -->
-        <q-input
-          v-model="email"
-          for="email"
-          class="mt-5"
-          label="Email"
-          aria-placeholder="Email"
-        >
-          <template v-slot:prepend>
-            <q-icon name="email" class="text-black" />
-          </template>
-        </q-input>
+          <!-- Email -->
+          <q-input
+            v-model="email"
+            for="email"
+            class="mt-2"
+            label="Email"
+            aria-placeholder="Email"
+          >
+            <template v-slot:prepend>
+              <q-icon name="email" class="text-black" />
+            </template>
+          </q-input>
 
-        <!-- Password -->
-        <q-input
-          v-model="password"
-          for="password"
-          class="mt-5"
-          :type="visible ? 'text' : 'password'"
-          label="Password"
-          aria-placeholder="Password"
-        >
-          <template v-slot:prepend>
-            <q-icon name="lock" class="text-black" />
-          </template>
-          <template #append>
-            <q-icon name="visibility_off" class="text-black" />
-          </template>
-        </q-input>
+          <!-- Password -->
+          <q-input
+            v-model="password"
+            for="password"
+            class="mt-2"
+            :type="visible ? 'text' : 'password'"
+            label="Password"
+            aria-placeholder="Password"
+          >
+            <template v-slot:prepend>
+              <q-icon name="lock" class="text-black" />
+            </template>
+            <template #append>
+              <q-icon :name="visible?'visibility':'visibility_off'" class="text-black" @click="visible = !visible"/>
+            </template>
+          </q-input>
 
-        <!-- Password Confirmation -->
-        <q-input
-          v-model="password_confirmation"
-          for="password_confirmation"
-          class="mt-5 mb-10"
-          label="Password Confirmation"
-          aria-placeholder="Password Confirmation"
-        >
-          <template v-slot:prepend>
-            <q-icon name="lock" class="text-black" />
-          </template>
-        </q-input>
+          <!-- Password Confirmation -->
+          <q-input
+            v-model="password_confirmation"
+            for="password_confirmation"
+            type="password"
+            class="mt-2 mb-10"
+            label="Password Confirmation"
+            aria-placeholder="Password Confirmation"
+          >
+            <template v-slot:prepend>
+              <q-icon name="lock" class="text-black" />
+            </template>
+          </q-input>
 
-        <!-- Register Button -->
-        <q-btn
-          label="Register"
-          class="full-width mt-10 mb-5 rounded-lg font-semibold submit-button-bg-color text-white"
-          padding="10px"
-        />
+          <!-- Register Button -->
+          <q-btn
+            label="Register"
+            class="full-width mb-5 rounded-lg font-semibold submit-button-bg-color text-white"
+            padding="10px"
+            type="submit"
+          />
 
-        <!-- aready have an account? -->
-        <div class="flex justify-between font-bold">
-          <span>Don't have an account?</span>
-          <a href="#" class="text-primary">Sign Up</a>
+          <!-- aready have an account? -->
+          <div class="flex justify-between font-bold">
+            <span>Don't have an account?</span>
+            <router-link :to="{name: 'signin'}" class="text-blue-700 hover:text-blue-900">Sign In</router-link>
+          </div>
+        </form>
+
+        <div id="login_image">
+          <!-- Background image goes here -->
         </div>
-      </form>
-
-      <div id="login_image">
-        <!-- Background image goes here -->
       </div>
-    </div>
   </q-page>
 
   <pre>
@@ -92,7 +94,7 @@ import { useAuthStore } from '../stores/auth';
 let email = ref('');
 let password = ref('');
 let visible = ref(false);
-let name = ref('My name');
+let name = ref('');
 let password_confirmation = ref('');
 let resp = ref('');
 
@@ -103,14 +105,16 @@ const authStore = useAuthStore();
 const submitForm = async () => {
   authStore.loading = true;
   try {
-    const response = await authStore.register(
+    let response = await authStore.register(
       name.value,
       email.value,
       password.value,
       password_confirmation.value
     );
     console.log(response);
-    router.push('/signin');
+    response = await authStore.login(email.value, password.value);
+    console.log(response);
+    router.push({name: 'dashboard'});
   } catch (error) {
     console.log(error)
     resp.value = 'An error occurred';

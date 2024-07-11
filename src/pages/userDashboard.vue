@@ -4,9 +4,9 @@
     <q-page-container>
       <q-card class="q-mb-md">
         <q-card-section>
-          <q-card-title>
+          <h1>
             Dashboard
-          </q-card-title>
+          </h1>
         </q-card-section>
         <q-card-section>
           <q-list>
@@ -51,8 +51,15 @@
 </template>
 
 <script setup lang="ts">
-  import { useAuthStore } from '../stores/auth';
+  import {  onMounted } from 'vue';
+import { useAuthStore } from '../stores/auth';
 
   const authStore = useAuthStore();
+
+  onMounted(() => {
+    if (!authStore.user) {
+      authStore.fetchUser();
+    }
+  });
 
 </script>

@@ -27,11 +27,15 @@
         </q-toolbar-title>
 
         <!-- Add search box that is allingned at the center -->
-        <input type="text" class="bg-inherit border border-blue-500 rounded-xl py-1 placeholder:text-center mobile-hidden mr-3" placeholder="search">
+        <input
+          type="text"
+          class="bg-inherit border border-blue-500 rounded-xl py-1 placeholder:text-center mobile-hidden mr-3"
+          placeholder="search"
+        />
 
-        <q-tabs align="left">
-          <q-route-tab :to="{ name: 'signin' }" label="sign in" />
-          <q-route-tab :to="{ name: 'signup' }" label="sign up" />
+        <q-tabs align="left" class="mobile-hide gt-xs">
+          <q-route-tab v-if="!authStore.loggedIn"  :to="{ name: 'signin' }" label="sign in" />
+          <q-route-tab v-if="!authStore.loggedIn" :to="{ name: 'signup' }" label="sign up" />
           <q-route-tab :to="{ name: 'posts' }" label="blog" />
         </q-tabs>
       </q-toolbar>
@@ -40,20 +44,58 @@
     <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
       <!-- drawer content -->
       <!-- dummy routes -->
-      <q-list>
-        <q-item clickable v-ripple>
-          <q-item-section>
-            <q-item-label>Home</q-item-label>
+      <q-list class="mt-10">
+        <!-- Sign In -->
+        <q-item clickable v-ripple :to="{ name: 'signin' }" v-if="!authStore.loggedIn">
+          <q-item-section class="flex flex-row gap-5 justify-start">
+            <q-item-label class="capitalize">sign in</q-item-label>
+            <!-- add icon -->
+             <q-icon name="login" class="text-black" />
           </q-item-section>
         </q-item>
-        <q-item clickable v-ripple>
-          <q-item-section>
-            <q-item-label>Profile</q-item-label>
+
+        <!-- Sign Up -->
+        <q-item v-if="!authStore.loggedIn" clickable v-ripple :to="{ name: 'signup' }">
+          <q-item-section class="flex flex-row gap-5 justify-start">
+            <q-item-label class="capitalize">sign up</q-item-label>
+            <!-- add icon -->
+            <q-icon name="person_add" class="text-black" />
           </q-item-section>
         </q-item>
-        <q-item clickable v-ripple>
-          <q-item-section>
-            <q-item-label>Settings</q-item-label>
+
+        <!-- Sign Out -->
+        <q-item clickable v-ripple  @click="logout" v-if="authStore.loggedIn">
+          <q-item-section class="flex flex-row gap-5 justify-start">
+            <q-item-label class="capitalize">sign out</q-item-label>
+            <!-- add icon -->
+            <q-icon name="logout" class="text-black" />
+          </q-item-section>
+        </q-item>
+
+        <!-- Blog -->
+        <q-item clickable v-ripple :to="{ name: 'posts' }">
+          <q-item-section class="flex flex-row gap-5 justify-start">
+            <q-item-label class="capitalize">blog</q-item-label>
+            <!-- add icon -->
+            <q-icon name="article" class="text-black" />
+          </q-item-section>
+        </q-item>
+
+        <!-- Dashboard -->
+        <q-item  clickable v-ripple :to="{ name: 'dashboard' }" v-if="authStore.loggedIn">
+          <q-item-section class="flex flex-row gap-5 justify-start">
+            <q-item-label class="capitalize">dashboard</q-item-label>
+            <!-- add icon -->
+            <q-icon name="dashboard" class="text-black" />
+          </q-item-section>
+        </q-item>
+
+        <!-- Health Records -->
+        <q-item clickable v-ripple  v-if="authStore.loggedIn">
+          <q-item-section class="flex flex-row gap-5 justify-start">
+            <q-item-label class="capitalize">health records</q-item-label>
+            <!-- add icon -->
+            <q-icon name="description" class="text-black" />
           </q-item-section>
         </q-item>
       </q-list>
@@ -67,17 +109,39 @@
 
 <script>
 import { ref } from 'vue';
+import { useAuthStore } from '../stores/auth';
+import { useRouter } from 'vue-router';
 
 export default {
   setup() {
     const leftDrawerOpen = ref(false);
+    const authStore = useAuthStore();
+    const message = ref('');
+    const router = useRouter();
+
+    const logout = async ()=>{
+      try{
+        await authStore.logout();
+        message.value = 'You have been logged out';
+        router.push('/signin');
+      }catch(error){
+        console.error('Logout error:', error);
+        message.value = 'An error occured while logging out';
+      }
+
+      console.log(message.value);
+    }
 
     return {
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
-    };
-  },
+      logout,
+      router,
+      message,
+      authStore
+    }
+}
 };
 </script>

@@ -17,6 +17,9 @@ interface User {
 export const useAuthStore = defineStore('auth', () => {
   const user : Ref<User|null> = ref(null);
   const loading = ref(false);
+  const loggedIn = ref(false);
+  const message = ref('');
+
 
   const API_URL = 'http://localhost:8000/api';
 
@@ -27,21 +30,23 @@ export const useAuthStore = defineStore('auth', () => {
       const token = response.data.token;
       localStorage.setItem('auth_token', token);
       user.value = response.data.user;
+      message.value = response.data.message;
     } finally {
       loading.value = false;
+      loggedIn.value = true;
     }
   };
 
   const register = async (name: string, email: string, password: string, password_confirmation: string) => {
     loading.value = true;
     try {
-      await axios.post(`${API_URL}/register`, {
+      const response = await axios.post(`${API_URL}/register`, {
         name,
         email,
         password,
         password_confirmation,
       });
-      await login(email, password); // Log in the user after registration
+      message.value = response.data.message;
     } finally {
       loading.value = false;
     }
@@ -59,9 +64,27 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = response.data.user;
   };
 
-  const logout = () => {
-    localStorage.removeItem('auth_token');
-    user.value = null;
+  const logout = async () => {
+      try {
+        const token = localStorage.getItem('auth_token');
+        if (!token) throw new Error('No token found');
+
+        const response = await axios.post(`${API_URL}/logout`, {},
+          {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        user.value = null;
+        message.value = response.data.message;
+        localStorage.removeItem('auth_token');
+
+        loading.value = false;
+        loggedIn.value = false;
+      } catch (error) {
+        console.log(error);
+      }
   };
 
   return {
@@ -71,6 +94,7 @@ export const useAuthStore = defineStore('auth', () => {
     register,
     fetchUser,
     logout,
+    loggedIn,
   };
 });
 
