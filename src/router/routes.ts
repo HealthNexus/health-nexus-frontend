@@ -1,24 +1,43 @@
 import { RouteRecordRaw } from 'vue-router';
+import { useAuthStore } from 'src/stores/auth';
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
+    beforeEnter: (to, from, next) => {
+      const authStore = useAuthStore();
+      if (authStore.loggedIn && (to.name === 'signin' || to.name === 'signup')) {
+        next({name: from.name || 'dashboard'})
+      } else {
+        next()
+      }
+    },
     children: [
       { path: '', name:'home', component: () => import('pages/IndexPage.vue') },
       { path: 'signup', name:'signup', component: () => import('pages/signUpPage.vue') },
       { path: 'signin', name:'signin', component: () => import('pages/signInPage.vue') },
-      { path: 'dashboard', name:'dashboard', component: () => import('pages/userDashboard.vue') },
       { path: 'test', name:'testPage', component: () => import('pages/TestPage.vue') },
+
+      // Posts routes
+      { path: 'posts/', component: () => import('pages/IndexPage.vue'), name:'posts' },
+      {path: 'posts/:id', name:'post', component: ()=> import('pages/PostPage.vue') }
     ],
   },
 
   {
-    path: '/posts/',
+    path: '/',
     component: () => import('layouts/MainLayout.vue'),
+    beforeEnter: (to, from, next) => {
+      const authStore = useAuthStore();
+      if (authStore.loggedIn) {
+       next()
+      } else {
+        next({name: 'signin'})
+      }
+    },
     children: [
-      { path: '', component: () => import('pages/IndexPage.vue'), name:'posts' },
-      {path: ':id', name:'post', component: ()=> import('pages/PostPage.vue') }
+      { path: 'dashboard', name:'dashboard', component: () => import('pages/userDashboard.vue')},
     ]
   },
 

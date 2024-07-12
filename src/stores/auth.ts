@@ -17,7 +17,7 @@ interface User {
 export const useAuthStore = defineStore('auth', () => {
   const user : Ref<User|null> = ref(null);
   const loading = ref(false);
-  const loggedIn = ref(false);
+  const loggedIn = ref(JSON.parse(localStorage.getItem('loggedIn') || 'false'));
   const message = ref('');
 
 
@@ -34,6 +34,7 @@ export const useAuthStore = defineStore('auth', () => {
     } finally {
       loading.value = false;
       loggedIn.value = true;
+      localStorage.setItem('loggedIn', JSON.stringify(loggedIn.value));
     }
   };
 
@@ -62,6 +63,8 @@ export const useAuthStore = defineStore('auth', () => {
       },
     });
     user.value = response.data.user;
+    loggedIn.value = true;
+    localStorage.setItem('loggedIn', JSON.stringify(loggedIn.value));
   };
 
   const logout = async () => {
@@ -82,6 +85,7 @@ export const useAuthStore = defineStore('auth', () => {
 
         loading.value = false;
         loggedIn.value = false;
+        localStorage.setItem('loggedIn', JSON.stringify(loggedIn.value));
       } catch (error) {
         console.log(error);
       }
