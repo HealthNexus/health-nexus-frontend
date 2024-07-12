@@ -3,19 +3,9 @@
     <div class="mr-auto ml-auto mt-4">
       <!-- add a toolbar for searching and selecting post via a drop down menu-->
       <q-toolbar class="grid grid-flow-col gap-5">
-        <q-input
-          v-model="search"
-          placeholder="Search for a post"
-          dense
-          class="sm:w-60 w-40"
-          debounce="100"
-          outlined
-        >
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
+
         {{ select.value }}
+        {{ search }}
         <q-select
           v-model="select"
           :options="
@@ -65,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { inject, onMounted, ref, watch} from 'vue';
 // import axiosInstance from 'src/axios';
 import { usePostStore } from 'src/stores/Posts';
 
@@ -74,7 +64,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const postStore = usePostStore();
-let search = ref('');
+let search = ref(inject('search') as string);
 let select = ref({label: '', value: ''});
 
 //a watcher to watch changes in search
