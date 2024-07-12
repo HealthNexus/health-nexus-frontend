@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header elevated class="bg-dark text-white">
+    <q-header elevated class="bg-dark text-white" >
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
 
@@ -29,6 +29,7 @@
         <!-- Add search box that is allingned at the center -->
         <input
           type="text"
+          v-model="search"
           class="bg-inherit border border-blue-500 rounded-xl py-1 placeholder:text-center mobile-hidden mr-3"
           placeholder="search"
         />
@@ -108,7 +109,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, provide } from 'vue';
 import { useAuthStore } from '../stores/auth';
 import { useRouter } from 'vue-router';
 
@@ -118,6 +119,11 @@ export default {
     const authStore = useAuthStore();
     const message = ref('');
     const router = useRouter();
+    const search = ref('');
+
+    provide('search', search)
+
+
 
     const logout = async ()=>{
       try{
@@ -140,6 +146,7 @@ export default {
       logout,
       router,
       message,
+      search,
       authStore
     }
 }
