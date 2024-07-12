@@ -1,7 +1,7 @@
 <template>
   <q-page padding class="flex content-center justify-center" >
     <!-- content -->
-    <div class="md:grid md:grid-cols-2 md:gap-5 content-center justify-center md:w-2/3" id="#form_container">
+    <div class="md:grid md:grid-cols-2 md:gap-5 content-center justify-center w-4/5" id="#form_container">
       <form @submit.prevent="login">
         <h2 class="text-center font-semibold text-xl">Login into your account</h2>
 
@@ -30,7 +30,9 @@
         <!-- Remember me -->
         <div class="flex justify-between hover:text-semibold">
           <q-checkbox v-model="remember_me" label="Remember me" />
+         <div class="flex content-center justify-center">
           <a href="#">Forgot Password?</a>
+         </div>
         </div>
 
         <!-- Login -->
