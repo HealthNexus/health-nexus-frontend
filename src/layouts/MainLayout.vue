@@ -117,7 +117,6 @@ export default {
   setup() {
     const leftDrawerOpen = ref(false);
     const authStore = useAuthStore();
-    const message = ref('');
     const router = useRouter();
     const search = ref('');
     const route = useRoute();
@@ -136,10 +135,9 @@ export default {
         router.push('/signin');
       }catch(error){
         console.error('Logout error:', error);
-        message.value = 'An error occured while logging out';
+        authStore.message.name = 'An error occured while logging out';
+        authStore.message.success = false;
       }
-
-      console.log(message.value);
     }
 
     return {
@@ -149,7 +147,6 @@ export default {
       },
       logout,
       router,
-      message,
       search,
       authStore,
       showHeader
