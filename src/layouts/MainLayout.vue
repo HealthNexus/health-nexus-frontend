@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header elevated class="bg-dark text-white" >
+    <q-header elevated class="bg-dark text-white"  v-if="showHeader">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
 
@@ -42,7 +42,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
+    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered v-if="showHeader">
       <!-- drawer content -->
       <!-- dummy routes -->
       <q-list class="mt-10">
@@ -109,9 +109,9 @@
 </template>
 
 <script>
-import { ref, provide } from 'vue';
+import { ref, provide, computed } from 'vue';
 import { useAuthStore } from '../stores/auth';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
 export default {
   setup() {
@@ -120,11 +120,16 @@ export default {
     const message = ref('');
     const router = useRouter();
     const search = ref('');
+    const route = useRoute();
+
 
     provide('search', search)
 
 
 
+    const showHeader = computed(() => {
+      return route.name !== 'signin' && route.name !== 'signup';
+    });
     const logout = async ()=>{
       try{
         await authStore.logout();
@@ -146,7 +151,8 @@ export default {
       router,
       message,
       search,
-      authStore
+      authStore,
+      showHeader
     }
 }
 };
