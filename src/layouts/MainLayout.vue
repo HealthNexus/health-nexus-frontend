@@ -128,7 +128,6 @@ export default {
     const logout = async ()=>{
       try{
         await authStore.logout();
-        message.value = 'You have been logged out';
         router.push('/signin');
       }catch(error){
         console.error('Logout error:', error);

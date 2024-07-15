@@ -22,30 +22,25 @@ export const usePostStore = defineStore('post', () => {
   const API_URL = 'http://localhost:8000/api';
 
   const fetchPost = async (id:number) => {
-    const token = localStorage.getItem('auth_token');
-    if (!token) throw new Error('No token found');
 
-    const response = await axios.get(`${API_URL}/posts/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    post.value = response.data.post;
-    console.log('post', post.value)
-    return post.value;
+    try{
+      const response = await axios.get(`${API_URL}/posts/${id}`);
+      post.value = response.data.post;
+      console.log('post', post.value)
+      return post.value;
+    }catch(error){
+      console.log(error)
+    }
   };
 
   const fetchPosts = async () => {
-    const token = localStorage.getItem('auth_token');
-    if (!token) throw new Error('No token found');
-
-    const response = await axios.get(`${API_URL}/posts`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    try{
+      const response = await axios.get(`${API_URL}/posts`);
     posts.value = response.data.posts;
     return posts;
+    }catch(error){
+      console.log(error)
+    }
   };
 
   // // search for posts
@@ -72,7 +67,7 @@ export const usePostStore = defineStore('post', () => {
     });
   // handle epty search to return all posts
     if(category === 'all'){
-      
+
       fetchPosts();
       category = '';
     }

@@ -2,7 +2,7 @@
   <q-page padding class="flex content-center justify-center ">
     <!-- content -->
       <div class="md:grid md:grid-cols-2 md:gap-5 content-center justify-center md:w-2/3" style="height:100%">
-        <form @submit.prevent="submitForm">
+        <form @submit.prevent="submitForm" >
           <h2 class="text-center font-semibold text-xl">Create an account</h2>
           <!-- Name -->
           <q-input
@@ -10,9 +10,24 @@
             for="name"
             label="Name"
             aria-placeholder="Name"
+            bottom-slots
+            :error="authStore.validationErrors?.name ? true: false"
+            :rules="[
+              val => !!val || 'Name field is required',
+              val => typeof val == 'string' || 'Name field must be a string'
+              ]"
+              :disable="authStore.loading"
+
           >
             <template v-slot:prepend>
               <q-icon name="person" class="text-black" />
+            </template>
+            <template #error>
+              <div v-if="authStore.validationErrors?.name">
+                <div v-for="(error, index) in authStore.validationErrors.name" :key="index" class="q-field__error">
+                  {{ error }}
+                </div>
+              </div>
             </template>
           </q-input>
 
@@ -23,9 +38,25 @@
             class="mt-2"
             label="Email"
             aria-placeholder="Email"
+            bottom-slots
+            :error="authStore.validationErrors?.email ? true: false"
+            :rules="[
+              val => !!val || 'Email field is required',
+              ]"
+              :disable="authStore.loading"
           >
             <template v-slot:prepend>
               <q-icon name="email" class="text-black" />
+            </template>
+
+            <template #error>
+              <div v-if="authStore.validationErrors?.email" >
+                <ul>
+                  <li v-for="(error, index) in authStore.validationErrors.email" :key="index" class="q-field__error">
+                    {{ error }}
+                  </li>
+                </ul>
+              </div>
             </template>
           </q-input>
 
@@ -37,12 +68,28 @@
             :type="visible ? 'text' : 'password'"
             label="Password"
             aria-placeholder="Password"
+            bottom-slots
+            :error="authStore.validationErrors?.password ? true: false"
+            :rules="[
+              val => !!val || 'The password field is required',
+              val => val.length == 8 || 'The password must be at least 8 characters long',
+              ]"
+              :disable="authStore.loading"
           >
             <template v-slot:prepend>
               <q-icon name="lock" class="text-black" />
             </template>
             <template #append>
               <q-icon :name="visible?'visibility':'visibility_off'" class="text-black" @click="visible = !visible"/>
+            </template>
+            <template #error>
+              <div v-if="authStore.validationErrors?.password">
+                <ul>
+                  <li v-for="(error, index) in authStore.validationErrors.password" :key="index" class="q-field__error ">
+                    {{ error }}
+                  </li>
+                </ul>
+              </div>
             </template>
           </q-input>
 
@@ -54,11 +101,25 @@
             class="mt-2 mb-10"
             label="Password Confirmation"
             aria-placeholder="Password Confirmation"
+            :rules="[
+              val => !!val || 'The password confirmation field is required is required',
+              val => val == password || 'The password confirmation must match the password',
+              ]"
+              :disable="authStore.loading"
           >
             <template v-slot:prepend>
               <q-icon name="lock" class="text-black" />
             </template>
+
+
           </q-input>
+
+          <q-spinner
+          v-if="authStore.loading"
+          size="50px"
+          color="primary"
+          class="q-mt-md"
+        />
 
           <!-- Register Button -->
           <q-btn
@@ -66,6 +127,7 @@
             class="full-width mb-5 rounded-lg font-semibold submit-button-bg-color text-white"
             padding="10px"
             type="submit"
+            :disable="authStore.loading"
           />
 
           <!-- aready have an account? -->
@@ -88,7 +150,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 
 let email = ref('');
@@ -98,23 +159,18 @@ let name = ref('');
 let password_confirmation = ref('');
 let resp = ref('');
 
-const router = useRouter();
-
 const authStore = useAuthStore();
 
 const submitForm = async () => {
   authStore.loading = true;
   try {
-    let response = await authStore.register(
+    await authStore.register(
       name.value,
       email.value,
       password.value,
       password_confirmation.value
     );
-    console.log(response);
-    response = await authStore.login(email.value, password.value);
-    console.log(response);
-    router.push({name: 'dashboard'});
+
   } catch (error) {
     console.log(error)
     resp.value = 'An error occurred';

@@ -6,9 +6,23 @@
         <h2 class="text-center font-semibold text-xl">Login into your account</h2>
 
         <!-- Email -->
-        <q-input v-model="email" for="email" type="email" label="Email">
+        <q-input v-model="email" for="email" type="email" label="Email"
+        bottom-slots
+        :error="authStore.validationErrors?.email ? true: false"
+        :rules="[
+          val => !!val || 'Email field is required',
+          ]"
+          :disable="authStore.loading"
+        >
           <template v-slot:prepend>
             <q-icon name="email" class="text-black" />
+          </template>
+          <template #error>
+            <div v-if="authStore.validationErrors?.email">
+              <div v-for="(error, index) in authStore.validationErrors.email" :key="index" class="q-field__error">
+                {{ error }}
+              </div>
+            </div>
           </template>
         </q-input>
 
@@ -18,14 +32,32 @@
           class="mt-5 mb-10"
           :type="visible ? 'text' : 'password'"
           for="password"
-          label="Password">
+          label="Password"
+          bottom-slots
+          :error="authStore.validationErrors?.password ? true: false"
+          :rules="[
+            val => !!val || 'Password field is required',
+            ]"
+          :disable="authStore.loading"
+          >
           <template v-slot:prepend>
             <q-icon name="lock" class="text-black" />
           </template>
           <template #append>
             <q-icon :name="visible?'visibility':'visibility_off'" class="text-black" @click="visible = !visible"/>
           </template>
+          <template #error>
+            <div v-if="authStore.validationErrors?.password">
+              <div v-for="(error, index) in authStore.validationErrors.password" :key="index" class="q-field__error">
+                {{ error }}
+              </div>
+            </div>
+          </template>
         </q-input>
+
+        <div>
+          <p class="text-red-500 text-center">{{authStore.message}}</p>
+        </div>
 
         <!-- Remember me -->
         <div class="flex justify-between hover:text-semibold">
@@ -35,8 +67,17 @@
          </div>
         </div>
 
+
+        <q-spinner
+        v-if="authStore.loading"
+        size="50px"
+        color="primary"
+        class="q-mt-md"
+      />
+
         <!-- Login -->
         <q-btn
+          :disable="authStore.loading"
           label="Login"
           class="full-width mt-10 mb-5 rounded-lg font-semibold submit-button-bg-color text-white"
           padding="10px"
@@ -75,8 +116,6 @@ const login = async () => {
   try {
     await authStore.login(email.value, password.value);
     router.push('/dashboard');
-  } catch (error) {
-    console.error('Login error:', error);
   } finally {
     authStore.loading = false;
   }
