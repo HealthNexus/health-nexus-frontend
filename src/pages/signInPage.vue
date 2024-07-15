@@ -19,7 +19,7 @@
           </template>
           <template #error>
             <div v-if="authStore.validationErrors?.email">
-              <div v-for="(error, index) in authStore.validationErrors.email" :key="index" class="q-field__error">
+              <div v-for="(error, index) in authStore.validationErrors.email" :key="index" class="q-field__error" >
                 {{ error }}
               </div>
             </div>
@@ -54,10 +54,6 @@
             </div>
           </template>
         </q-input>
-
-        <div>
-          <p class="text-red-500 text-center">{{authStore.message}}</p>
-        </div>
 
         <!-- Remember me -->
         <div class="flex justify-between hover:text-semibold">
@@ -103,6 +99,9 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
+
+
+
 let email = ref('');
 let password = ref('');
 let remember_me= ref('');
@@ -120,6 +119,9 @@ const login = async () => {
     authStore.loading = false;
   }
 };
+
+
+
 </script>
 
 <style>
