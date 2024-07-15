@@ -4,6 +4,9 @@ import { ref, Ref } from 'vue';
 import axios, { AxiosError } from 'axios';
 import { useRouter } from 'vue-router';
 
+import { Notify } from 'quasar'
+
+
 
 
 interface User {
@@ -28,12 +31,17 @@ interface Errors{
 
 }
 
+interface Message{
+  name: string
+  success: boolean
+}
+
 
 export const useAuthStore = defineStore('auth', () => {
   const user : Ref<User|null> = ref(null);
   const loading = ref(false);
   const loggedIn = ref(JSON.parse(localStorage.getItem('loggedIn') || 'false'));
-  const message = ref('');
+  const message: Ref<Message> = ref({name: '', success: true});
   const router = useRouter();
   const validationErrors: Ref<Errors|null> = ref(null)
 
@@ -47,7 +55,11 @@ export const useAuthStore = defineStore('auth', () => {
       const token = response.data.token;
       localStorage.setItem('auth_token', token);
       user.value = response.data.user;
-      message.value = response.data.message;
+
+      //Set success message
+      message.value.name = response.data.message;
+      message.value.success = true
+
       loggedIn.value = true;
       localStorage.setItem('loggedIn', JSON.stringify(loggedIn.value));
     } catch(error){
@@ -55,9 +67,17 @@ export const useAuthStore = defineStore('auth', () => {
       const data = axiosErr.response?.data as Data
       const errors = data?.errors as Errors
       validationErrors.value = errors;
-      if(data.message) message.value = data.message;
+      if(data.message) {
+        message.value.name = data.message;
+        message.value.success = false;
+      }
+      
     }finally {
       loading.value = false;
+      Notify.create({
+        message: message.value.name,
+        color: message.value.success? 'green':'red'
+      })
     }
   };
 
@@ -72,17 +92,26 @@ export const useAuthStore = defineStore('auth', () => {
       });
       await login(email, password);
 
-      message.value = response.data.message;
+      message.value.name = response.data.message;
+      message.value.success = true;
+
       router.push({name: 'dashboard'});
     }catch( error){
       const axiosErr = error as AxiosError;
       const data = axiosErr.response?.data as Data
       const errors = data?.errors as Errors
       validationErrors.value = errors;
-      if(data.message) message.value = data.message;
+      if(data.message) {
+        message.value.name = data.message;
+        message.value.success = false;
+      }
     }
     finally {
       loading.value = false;
+      Notify.create({
+        message: message.value.name,
+        color: message.value.success? 'green':'red'
+      })
     }
   };
 
@@ -97,10 +126,23 @@ export const useAuthStore = defineStore('auth', () => {
       },
     });
     user.value = response.data.user;
+
     loggedIn.value = true;
     localStorage.setItem('loggedIn', JSON.stringify(loggedIn.value));
    }catch(error){
-    console.log(error);
+    const axiosErr = error as AxiosError;
+    const data = axiosErr.response?.data as Data
+    const errors = data?.errors as Errors
+    validationErrors.value = errors;
+    if(data.message) {
+      message.value.name = data.message;
+      message.value.success = false;
+    }
+   } finally{
+    Notify.create({
+      message: message.value.name,
+      color: message.value.success? 'green':'red'
+    })
    }
   };
 
@@ -118,15 +160,29 @@ export const useAuthStore = defineStore('auth', () => {
         });
 
         user.value = null;
-        message.value = response.data.message;
+
+        message.value.name = response.data.message;
+        message.value.success = true;
+
         localStorage.removeItem('auth_token');
 
         loggedIn.value = false;
         localStorage.setItem('loggedIn', JSON.stringify(loggedIn.value));
       } catch (error) {
-        console.log(error);
+        const axiosErr = error as AxiosError;
+        const data = axiosErr.response?.data as Data
+        const errors = data?.errors as Errors
+        validationErrors.value = errors;
+        if(data.message) {
+          message.value.name = data.message;
+          message.value.success = false;
+        }
       } finally{
         loading.value = false;
+        Notify.create({
+          message: message.value.name,
+          color: message.value.success? 'green':'red'
+        })
       }
   };
 
