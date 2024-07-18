@@ -10,7 +10,7 @@ The frontend aspect of nexus health
 ### 1. Clone the Repository
 
 ```sh
-git clone https://github.com/yourusername/yourproject.git
+git clone https://github.com/HealthNexus/health-nexus-frontend.git
 cd yourproject
 ```
 ### 2. Install Dependencies
