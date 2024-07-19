@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpR fFf">
+  <q-layout view="hHh lpR fFf" >
     <q-header elevated class="bg-dark text-white"  v-if="showHeader">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
@@ -32,12 +32,12 @@
           v-model="search"
           class="bg-inherit border border-blue-500 rounded-xl py-1 placeholder:text-center mobile-hidden mr-3"
           placeholder="search"
+          v-if="showSearch"
         />
 
         <q-tabs align="left" class="mobile-hide gt-xs">
           <q-route-tab v-if="!authStore.loggedIn"  :to="{ name: 'signin' }" label="sign in" />
           <q-route-tab v-if="!authStore.loggedIn" :to="{ name: 'signup' }" label="sign up" />
-          <q-route-tab :to="{ name: 'posts' }" label="blog" />
         </q-tabs>
       </q-toolbar>
     </q-header>
@@ -110,16 +110,18 @@
 
 <script>
 import { ref, provide, computed } from 'vue';
-import { useAuthStore } from '../stores/auth';
+import { useAuthStore, useGlobalStore } from '../stores/auth';
 import { useRouter, useRoute } from 'vue-router';
 
 export default {
   setup() {
     const leftDrawerOpen = ref(false);
     const authStore = useAuthStore();
+    const globalStore = useGlobalStore();
     const router = useRouter();
     const search = ref('');
     const route = useRoute();
+
 
 
     provide('search', search)
@@ -149,7 +151,9 @@ export default {
       router,
       search,
       authStore,
-      showHeader
+      showHeader,
+      globalStore,
+
     }
 }
 };
