@@ -19,20 +19,54 @@
         <div>{{ postStore.post?.body }}</div>
       </div>
     </div>
-  <comment-section :comments = "postStore.post?.comments as Comments[]"/>
+
+    <div class="mt-20">
+      <!-- Comment form -->
+      <comment-form :postId="postStore.post?.id as number" />
+
+      <!-- Comment section -->
+      <!-- show first two comments -->
+      <q-spinner-dots size="2rem" class="q-ml-auto q-mr-xl" v-if="globalStore.typing" />
+      <comment-section
+        :comments="postStore.post?.comments?.slice(0, 2) as Comments[]"
+        v-if="!showComments"
+      />
+      <div class="flex mr-5">
+        <button
+          @click="toggleCommentShow"
+          class="font-semibold text-blue-500 p-2 rounded-lg hover:text-blue-700 q-ml-auto"
+          style="width: fit-content"
+          v-if="postStore.post?.comments?.length! > 2"
+        >
+          {{ showComments ? 'Hide Comments' : 'Show more' }}
+        </button>
+      </div>
+      <comment-section
+        :comments="postStore.post?.comments as Comments[]"
+        v-if="showComments"
+      />
+    </div>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { Comments } from 'src/stores/Posts';
 import { usePostStore } from 'src/stores/Posts';
+import CommentForm from 'src/components/CommentForm.vue';
+import { useGlobalStore } from 'src/stores/global';
 
 import { useRouter } from 'vue-router';
 import CommentSection from 'src/components/CommentSection.vue';
 
 const router = useRouter();
 const postStore = usePostStore();
+const globalStore = useGlobalStore();
+
+const showComments = ref(false);
+function toggleCommentShow() {
+  showComments.value = !showComments.value;
+}
 
 onMounted(() => {
   postStore.fetchPost(Number(router.currentRoute.value.params.id));
