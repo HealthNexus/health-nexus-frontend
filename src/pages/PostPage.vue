@@ -19,53 +19,17 @@
         <div>{{ postStore.post?.body }}</div>
       </div>
     </div>
-    <div class="q-pa-md row justify-end">
-      <div style="width: 100%; max-width: 400px" class="border border-green-100 p-5 bg-green-50 rounded-lg">
-        <q-chat-message
-          :text="['Have you seen Quasar?']"
-          sent
-          text-color="white"
-          bg-color="green"
-        >
-          <template v-slot:name>me</template>
-          <template v-slot:stamp>7 minutes ago</template>
-          <template v-slot:avatar>
-            <img
-              class="q-message-avatar q-message-avatar--sent"
-              src="https://cdn.quasar.dev/img/avatar4.jpg"
-            >
-          </template>
-        </q-chat-message>
-
-        <q-chat-message
-          bg-color="black"
-          text-color="white"
-        >
-          <template v-slot:name>Mary</template>
-          <template v-slot:avatar>
-            <img
-              class="q-message-avatar q-message-avatar--received"
-              src="https://cdn.quasar.dev/img/avatar2.jpg"
-            >
-          </template>
-
-          <div>
-            Already building an app with it...
-          </div>
-
-          <q-spinner-dots size="2rem" />
-        </q-chat-message>
-      </div>
-    </div>
+  <comment-section :comments = "postStore.post?.comments as Comments[]"/>
   </q-page>
 </template>
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
-// import axiosInstance from 'src/axios';
+import { Comments } from 'src/stores/Posts';
 import { usePostStore } from 'src/stores/Posts';
 
 import { useRouter } from 'vue-router';
+import CommentSection from 'src/components/CommentSection.vue';
 
 const router = useRouter();
 const postStore = usePostStore();
