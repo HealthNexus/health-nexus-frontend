@@ -2,7 +2,8 @@
 import { defineStore } from 'pinia';
 import { ref, Ref } from 'vue';
 import axios from 'axios';
-
+import { useAuthStore } from './auth';
+import { Notify } from 'quasar'
 interface Post {
   id: number;
  title: string;
@@ -51,6 +52,7 @@ interface Post {
 
 
 export const usePostStore = defineStore('post', () => {
+  const authStore = useAuthStore();
   const post : Ref<Post|null> = ref(null);
   const posts : Ref<Post[]|undefined> = ref([]);
 
@@ -115,6 +117,48 @@ export const usePostStore = defineStore('post', () => {
     return posts;
   };
 
+  //post comment http://127.0.0.1:8000/api/posts/1/comments
+  const postComment = async (postId: number, comment: string) => {
+    try{
+      const token = localStorage.getItem('auth_token');
+      if (!token) throw new Error('No token found');
+
+      const response = await axios.post(`${API_URL}/posts/${postId}/comments`, {
+        body: comment,
+        user_id: authStore.user?.id,
+      },
+      {
+        headers: {Authorization: `Bearer ${token}`},
+      }
+    );
+      Notify.create({
+        message: response.data.message,
+        color: 'green'
+      })
+    }catch(error){
+      console.log(error)
+    }
+  };
+
+  // delete comment from this route /comments/22/destroy
+  const deleteComment = async (commentId: number) => {
+    try{
+      const token = localStorage.getItem('auth_token');
+      if (!token) throw new Error('No token found');
+
+      const response = await axios.delete(`${API_URL}/comments/${commentId}/destroy`, {
+        headers: {Authorization: `Bearer ${token}`},
+      }
+    );
+      Notify.create({
+        message: response.data.message,
+        color: 'green'
+      })
+    }catch(error){
+      console.log(error)
+    }
+  };
+
 
 
 
@@ -124,7 +168,9 @@ export const usePostStore = defineStore('post', () => {
     posts,
     fetchPosts,
     fetchPost,
-    searchPosts
+    searchPosts,
+    postComment,
+    deleteComment
   };
 });
 
