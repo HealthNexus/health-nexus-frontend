@@ -97,7 +97,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 
 
@@ -106,7 +105,6 @@ let email = ref('');
 let password = ref('');
 let remember_me= ref('');
 let visible = ref(false);
-const router = useRouter();
 
 const authStore = useAuthStore();
 
@@ -114,7 +112,6 @@ const login = async () => {
   authStore.loading = true;
   try {
     await authStore.login(email.value, password.value);
-    router.push('/dashboard');
   } finally {
     authStore.loading = false;
   }

@@ -20,12 +20,12 @@
       </div>
     </div>
     <div class="q-pa-md row justify-end">
-      <div style="width: 100%; max-width: 400px">
+      <div style="width: 100%; max-width: 400px" class="border border-green-100 p-5 bg-green-50 rounded-lg">
         <q-chat-message
           :text="['Have you seen Quasar?']"
           sent
           text-color="white"
-          bg-color="primary"
+          bg-color="green"
         >
           <template v-slot:name>me</template>
           <template v-slot:stamp>7 minutes ago</template>
@@ -38,7 +38,8 @@
         </q-chat-message>
 
         <q-chat-message
-          bg-color="amber"
+          bg-color="black"
+          text-color="white"
         >
           <template v-slot:name>Mary</template>
           <template v-slot:avatar>
