@@ -8,7 +8,7 @@ import { ref } from 'vue';
 
 
 
-export const usePostStore = defineStore('global', () => {
+export const useGlobalStore = defineStore('global', () => {
 
   const showSearch = ref(false);
 
