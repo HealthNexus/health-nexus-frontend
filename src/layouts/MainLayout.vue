@@ -32,7 +32,7 @@
           v-model="search"
           class="bg-inherit border border-blue-500 rounded-xl py-1 placeholder:text-center mobile-hidden mr-3"
           placeholder="search"
-          v-if="showSearch"
+          v-if="globalStore.showSearch"
         />
 
         <q-tabs align="left" class="mobile-hide gt-xs">
@@ -110,7 +110,8 @@
 
 <script>
 import { ref, provide, computed } from 'vue';
-import { useAuthStore, useGlobalStore } from '../stores/auth';
+import { useAuthStore } from '../stores/auth';
+import { useGlobalStore } from '../stores/global';
 import { useRouter, useRoute } from 'vue-router';
 
 export default {
