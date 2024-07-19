@@ -10,13 +10,13 @@ import { ref } from 'vue';
 
 export const usePostStore = defineStore('global', () => {
 
-  const value = ref('')
+  const showSearch = ref(false);
 
 
 
 
   return {
-    value
+    showSearch
   };
 });
 
