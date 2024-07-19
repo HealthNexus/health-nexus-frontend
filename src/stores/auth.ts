@@ -9,6 +9,7 @@ import { Notify } from 'quasar'
 
 
 
+
 interface User {
   id: number;
   name: string;
@@ -16,6 +17,8 @@ interface User {
   email_verified_at: string | null;
   created_at: string;
   updated_at: string;
+  avatar: string | null;
+  hospital_id: number;
 }
 
 interface Data {
@@ -55,6 +58,7 @@ export const useAuthStore = defineStore('auth', () => {
       const token = response.data.token;
       localStorage.setItem('auth_token', token);
       user.value = response.data.user;
+      localStorage.setItem('user', JSON.stringify(user.value));
 
       //Set success message
       message.value.name = response.data.message;
@@ -62,6 +66,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       loggedIn.value = true;
       localStorage.setItem('loggedIn', JSON.stringify(loggedIn.value));
+      router.push('/dashboard');
     } catch(error){
       const axiosErr = error as AxiosError;
       const data = axiosErr.response?.data as Data
@@ -71,7 +76,7 @@ export const useAuthStore = defineStore('auth', () => {
         message.value.name = data.message;
         message.value.success = false;
       }
-      
+
     }finally {
       loading.value = false;
       Notify.create({
@@ -81,7 +86,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
   };
 
-  const register = async (name: string, email: string, password: string, password_confirmation: string) => {
+  const register = async (name: string, email: string, password: string, password_confirmation: string, hospital_id: number) => {
     loading.value = true;
     try {
       const response = await axios.post(`${API_URL}/register`, {
@@ -89,6 +94,7 @@ export const useAuthStore = defineStore('auth', () => {
         email,
         password,
         password_confirmation,
+        hospital_id,
       });
       await login(email, password);
 
@@ -186,6 +192,30 @@ export const useAuthStore = defineStore('auth', () => {
       }
   };
 
+  const fetchHospitals = async () => {
+    try {
+      loading.value = true
+      const response = await axios.get(`${API_URL}/hospitals`);
+      return response.data.hospitals;
+    } catch(error){
+      const axiosErr = error as AxiosError;
+      const data = axiosErr.response?.data as Data
+      const errors = data?.errors as Errors
+      validationErrors.value = errors;
+      if(data.message) {
+        message.value.name = data.message;
+        message.value.success = false;
+      }
+     }
+     finally{
+      loading.value = false;
+      Notify.create({
+        message: message.value.name,
+        color: message.value.success? 'green':'red'
+      })
+     }
+  }
+
   return {
     user,
     loading,
@@ -195,7 +225,9 @@ export const useAuthStore = defineStore('auth', () => {
     logout,
     loggedIn,
     validationErrors,
-    message
+    message,
+    fetchHospitals,
+
   };
 });
 
