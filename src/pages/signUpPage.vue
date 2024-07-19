@@ -114,6 +114,17 @@
 
           </q-input>
 
+          <!-- Select hospitals -->
+          <q-select
+            v-model="hospital"
+            :loading="authStore.loading"
+            :options="hospitals"
+            option-label="name"
+            label="Select Hospital"
+            class="mb-8"
+            outlined
+            />
+
           <q-spinner
           v-if="authStore.loading"
           size="50px"
@@ -128,6 +139,7 @@
             padding="10px"
             type="submit"
             :disable="authStore.loading"
+
           />
 
           <!-- aready have an account? -->
@@ -143,6 +155,8 @@
       </div>
   </q-page>
 
+
+
   <pre>
     {{ resp }}
   </pre>
@@ -157,18 +171,21 @@ let password = ref('');
 let visible = ref(false);
 let name = ref('');
 let password_confirmation = ref('');
+let hospital = ref();
 let resp = ref('');
+const hospitals = ref([]);
+
 
 const authStore = useAuthStore();
 
 const submitForm = async () => {
-  authStore.loading = true;
   try {
     await authStore.register(
       name.value,
       email.value,
       password.value,
-      password_confirmation.value
+      password_confirmation.value,
+      Number(hospital.value.id)
     );
 
   } catch (error) {
@@ -177,9 +194,12 @@ const submitForm = async () => {
   }
 };
 
+const fetchHospitals = async () => {
+  hospitals.value = await authStore.fetchHospitals();
+  console.log(hospitals.value);
+};
 
-
-
+fetchHospitals();
 </script>
 
 <style>
