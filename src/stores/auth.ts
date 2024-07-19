@@ -41,7 +41,7 @@ interface Message{
 
 
 export const useAuthStore = defineStore('auth', () => {
-  const user : Ref<User|null> = ref(null);
+  const user : Ref<User|null> = ref(JSON.parse(localStorage.getItem('user') || 'null'));
   const loading = ref(false);
   const loggedIn = ref(JSON.parse(localStorage.getItem('loggedIn') || 'false'));
   const message: Ref<Message> = ref({name: '', success: true});
