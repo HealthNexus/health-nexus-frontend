@@ -6,6 +6,10 @@
 
         {{ select.value }}
         {{ search }}
+        <button
+        class="underline hover:text-blue-500"
+        @click="fetchPosts"
+        >All</button>
         <q-select
           v-model="select"
           :options="
@@ -59,9 +63,12 @@ import { inject, onMounted, ref, watch} from 'vue';
 // import axiosInstance from 'src/axios';
 import { usePostStore } from 'src/stores/Posts';
 
+import { useGlobalStore } from 'src/stores/global';
+
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+const globalStore = useGlobalStore();
 
 const postStore = usePostStore();
 let search = ref(inject('search') as string);
@@ -79,8 +86,15 @@ async function viewPost(id: number) {
   router.push({ name: 'post', params: { id } });
 }
 
+async function fetchPosts() {
+  postStore.fetchPosts();
+  search.value = '';
+}
+
 onMounted(() => {
   postStore.fetchPosts();
+  globalStore.showSearch = true;
+
 });
 </script>
 
