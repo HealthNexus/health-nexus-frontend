@@ -3,7 +3,6 @@ import { defineStore } from 'pinia';
 import { ref, Ref } from 'vue';
 import axios from 'axios';
 
-
 interface Post {
   id: number;
  title: string;
@@ -12,7 +11,43 @@ interface Post {
  thumbnail: string|null;
   created_at: string;
   updated_at: string;
-}
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    avatar: string|null;
+  };
+  category: {
+    id: number;
+    name: string;
+  };
+  comments: Comments[]|null;
+  }
+
+  interface Comments{
+    id: number
+    user: {
+      id: number
+      name: string
+      avatar: string|null
+    }
+    body: string
+    created_at: string
+    updated_at: string
+    replies: Replies[]|null
+  }
+
+  interface Replies{
+    id: number
+    user: {
+      id: number
+      name: string
+      avatar: string|null
+    }
+    body: string
+    created_at: string
+    updated_at: string
+  }
 
 
 export const usePostStore = defineStore('post', () => {
@@ -89,7 +124,7 @@ export const usePostStore = defineStore('post', () => {
     posts,
     fetchPosts,
     fetchPost,
-    searchPosts,
+    searchPosts
   };
 });
 
