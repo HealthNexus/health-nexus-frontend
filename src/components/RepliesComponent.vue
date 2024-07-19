@@ -1,10 +1,12 @@
 <template>
-  <button
+  <div>
+    <button
   @click="toggleRepliesShow"
   class="font-semibold hover:text-blue-500"
   >
     {{ showReplies ? 'Hide Replies' : 'Show Replies' }}
   </button>
+  </div>
 <div v-if="showReplies">
   <q-chat-message
   bg-color="black"
