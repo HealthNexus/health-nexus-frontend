@@ -11,7 +11,7 @@ interface Post {
  thumbnail: string|null;
   created_at: string;
   updated_at: string;
-  user: {
+  writer: {
     id: number;
     name: string;
     email: string;
@@ -24,9 +24,9 @@ interface Post {
   comments: Comments[]|null;
   }
 
-  interface Comments{
+ export interface Comments{
     id: number
-    user: {
+    writer: {
       id: number
       name: string
       avatar: string|null
@@ -37,9 +37,9 @@ interface Post {
     replies: Replies[]|null
   }
 
-  interface Replies{
+  export interface Replies{
     id: number
-    user: {
+    writer: {
       id: number
       name: string
       avatar: string|null
