@@ -9,7 +9,7 @@ interface Post {
  title: string;
  excerpt: string;
  body: string;
- thumbnail: string|null;
+ thumbnail: string;
   created_at: string;
   updated_at: string;
   writer: {
