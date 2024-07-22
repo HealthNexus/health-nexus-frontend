@@ -66,7 +66,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       loggedIn.value = true;
       localStorage.setItem('loggedIn', JSON.stringify(loggedIn.value));
-      router.push('/dashboard');
+      router.push({name: 'posts'});
     } catch(error){
       const axiosErr = error as AxiosError;
       const data = axiosErr.response?.data as Data

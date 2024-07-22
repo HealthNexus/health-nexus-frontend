@@ -54,7 +54,7 @@ interface Post {
 export const usePostStore = defineStore('post', () => {
   const authStore = useAuthStore();
   const post : Ref<Post|null> = ref(null);
-  const posts : Ref<Post[]|undefined> = ref([]);
+  const posts : Ref<Post[]> = ref([]);
 
   const API_URL = 'http://localhost:8000/api';
 
