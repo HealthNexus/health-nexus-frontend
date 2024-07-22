@@ -2,10 +2,7 @@
   <q-page>
     <div class="grid justify-around mt-5 gap-3 sm:grid-flow-col">
       <div class="col-span-4 sm:ml-5">
-        <img
-          src="https://cdn.quasar.dev/img/parallax2.jpg"
-          class="self-center rounded-xl"
-        />
+        <q-img :src="postStore.post?.thumbnail ?? 'https://picsum.photos/800/400'" :ratio="16 / 9" class="rounded-2xl"/>
       </div>
       <div class="col-span-8">
         <q-btn
@@ -16,7 +13,7 @@
           round
         />
         <h1 class="font-semibold text-center text-sm">{{ postStore.post?.title }}</h1>
-        <div>{{ postStore.post?.body }}</div>
+        <div v-html="postStore.post?.body"></div>
       </div>
     </div>
 
