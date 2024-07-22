@@ -80,19 +80,32 @@ export const usePostStore = defineStore('post', () => {
     }
   };
 
-  // // search for posts
-  // const searchPosts = async (query: string) => {
-  //   const token = localStorage.getItem('auth_token');
-  //   if (!token) throw new Error('No token found');
 
-  //   const response = await axios.get(`${API_URL}/posts/search?q=${query}`, {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   });
-  //   posts.value = response.data.posts;
-  //   return posts;
-  // };
+  // Store the post in the database
+  const storePost = async (title: string, excerpt: string, body: string, disease_id: number, thumbnail: string|null) => {
+    try{
+      const token = localStorage.getItem('auth_token');
+      if (!token) throw new Error('No token found');
+
+      const response = await axios.post(`${API_URL}/posts/store `, {
+        title,
+        excerpt,
+        body,
+        disease_id,
+        thumbnail,
+      },
+      {
+        headers: {Authorization: `Bearer ${token}`},
+      }
+    );
+      Notify.create({
+        message: response.data.message,
+        color: 'green'
+      })
+    }catch(error){
+      console.log(error)
+    }
+  };
 
   //search through posts on the client side, utilise regex for complex searches
   const searchPosts = (query: string, category: string) => {
@@ -163,6 +176,8 @@ export const usePostStore = defineStore('post', () => {
 
 
 
+
+
   return {
     post,
     posts,
@@ -170,7 +185,8 @@ export const usePostStore = defineStore('post', () => {
     fetchPost,
     searchPosts,
     postComment,
-    deleteComment
+    deleteComment,
+    storePost
   };
 });
 
