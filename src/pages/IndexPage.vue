@@ -38,7 +38,7 @@
         v-for="post in postStore.posts"
         :key="post.id"
       >
-        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg" :ratio="16 / 9">
+        <q-img :src="post?.thumbnail ?? `https://picsum.photos/id/${post.id + 10}/800/400`" :ratio="16 / 9">
           <div class="absolute-bottom text-h6">
             {{ post.title }}
           </div>
@@ -57,7 +57,7 @@
     <div class="grid grid-flow-row q-mx-auto content-center text-xl font-bold " v-else>
       <!-- Big Search Icon -->
       <h1>
-        No Post found that matches the search
+        No Post found
         <q-icon name="search" size="100" />
         <q-spinner />
       </h1>
@@ -81,6 +81,7 @@ const globalStore = useGlobalStore();
 const postStore = usePostStore();
 let search = ref(inject('search') as string);
 let select = ref({label: '', value: ''});
+
 
 //a watcher to watch changes in search
 watch([() => search.value, () => select.value.value], async ([newSearch, newSelect]) => {
