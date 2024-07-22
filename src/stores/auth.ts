@@ -21,12 +21,12 @@ interface User {
   hospital_id: number;
 }
 
-interface Data {
+export interface Data {
   message: string|null
   errors: string|null|Errors
 }
 
-interface Errors{
+export interface Errors{
   name: string|null
   email: string|null
   password: string|null
@@ -34,7 +34,7 @@ interface Errors{
 
 }
 
-interface Message{
+export interface Message{
   name: string
   success: boolean
 }
@@ -101,7 +101,7 @@ export const useAuthStore = defineStore('auth', () => {
       message.value.name = response.data.message;
       message.value.success = true;
 
-      router.push({name: 'dashboard'});
+      router.push({name: 'posts'});
     }catch( error){
       const axiosErr = error as AxiosError;
       const data = axiosErr.response?.data as Data
