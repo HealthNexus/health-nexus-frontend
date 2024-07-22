@@ -90,6 +90,15 @@
           </q-item-section>
         </q-item>
 
+        <!-- Add Post -->
+        <q-item clickable v-ripple :to="{ name: 'test' }">
+          <q-item-section class="flex flex-row gap-5 justify-start">
+            <q-item-label class="capitalize">Add post</q-item-label>
+            <!-- add icon -->
+            <q-icon name="add" class="text-black" />
+          </q-item-section>
+        </q-item>
+
         <!-- Dashboard -->
         <q-item  clickable v-ripple :to="{ name: 'dashboard' }" v-if="authStore.loggedIn">
           <q-item-section class="flex flex-row gap-5 justify-start">
