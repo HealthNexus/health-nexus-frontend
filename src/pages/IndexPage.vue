@@ -3,9 +3,6 @@
     <div class="mr-auto ml-auto mt-4">
       <!-- add a toolbar for searching and selecting post via a drop down menu-->
       <q-toolbar class="grid grid-flow-col gap-5">
-
-        {{ select.value }}
-        {{ search }}
         <button
         class="underline hover:text-blue-500"
         @click="fetchPosts"
@@ -29,11 +26,12 @@
 
         />
       </q-toolbar>
+
     </div>
+
     <div
-      class="grid sm:grid-flow-row sm:grid-cols-3 gap-5 mt-5 ml-auto mr-auto"
-      style="max-width: 100vw"
-    >
+      class="grid sm:grid-flow-row sm:grid-cols-3 gap-5 mt-5 ml-auto mr-auto p-5"
+      style="max-width: 100vw" v-if="postStore.posts.length > 0">
       <q-card
         class=""
         style="max-width: 400px"
@@ -55,6 +53,16 @@
         </div>
       </q-card>
     </div>
+    <!-- Else show No Post found that matches the search -->
+    <div class="grid grid-flow-row q-mx-auto content-center text-xl font-bold " v-else>
+      <!-- Big Search Icon -->
+      <h1>
+        No Post found that matches the search
+        <q-icon name="search" size="100" />
+        <q-spinner />
+      </h1>
+    </div>
+
   </q-page>
 </template>
 
