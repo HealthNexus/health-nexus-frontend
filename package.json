@@ -49,5 +49,15 @@
     "node": "^20 || ^18 || ^16",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
-  }
+  },
+  "main": "postcss.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HealthNexus/health-nexus-frontend.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HealthNexus/health-nexus-frontend/issues"
+  },
+  "homepage": "https://github.com/HealthNexus/health-nexus-frontend#readme"
 }
