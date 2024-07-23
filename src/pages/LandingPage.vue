@@ -33,6 +33,7 @@
           Welcome {{ authStore.user?.name }}
         </div>
 
+        <q-space />
 
         <!-- Add search box that is allingned at the center -->
         <input
@@ -43,7 +44,7 @@
           v-if="globalStore.showSearch"
         />
 
-        <q-tabs align="left" class="mobile-hide gt-xs">
+        <q-tabs align="justify" class="mobile-hide gt-xs">
           <q-route-tab v-if="!authStore.loggedIn"  :to="{ name: 'signin' }" label="sign in" />
           <q-route-tab v-if="!authStore.loggedIn" :to="{ name: 'signup' }" label="sign up" />
         </q-tabs>
@@ -55,7 +56,7 @@
         <h1 class="main-title">Welcome to Health Nexus</h1>
         <p class="subtitle">Your Ultimate Solution for all health and wellness activity!</p>
         <div class="buttons">
-          <q-btn color="primary" label="Live Preview" class="rounded-button" />
+          <q-btn color="blue-7" label="Live Preview" class="rounded-button glossy" />
           <q-btn color="primary" outline label="Introduction" class="rounded-button" />
           <q-btn color="primary" outline label="Quick Start" class="rounded-button" />
         </div>
@@ -129,6 +130,7 @@ export default {
 }
 
 .main-title {
+  color:blue;
   font-size: 3rem;
   margin-bottom: 0.5rem;
 }
