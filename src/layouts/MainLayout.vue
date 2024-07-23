@@ -109,7 +109,7 @@
         </q-item>
 
         <!-- Health Records -->
-        <q-item clickable v-ripple  v-if="authStore.loggedIn">
+        <q-item clickable v-ripple  v-if="authStore.loggedIn" :to="{name: 'records'}">
           <q-item-section class="flex flex-row gap-5 justify-start">
             <q-item-label class="capitalize">health records</q-item-label>
             <!-- add icon -->
