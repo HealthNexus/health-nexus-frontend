@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <div class="grid sm:grid-cols-3 gap-3" v-if="!processing">
-      <q-card class="my-card" flat bordered v-for="disease in records.diseases" :key="disease.id">
+      <q-card class="my-card" flat bordered v-for="disease in searchRecords" :key="disease.id">
         <q-item>
           <q-item-section avatar>
             <q-avatar>
@@ -55,15 +55,37 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, Ref, ref } from 'vue';
+import { computed, onMounted, Ref, ref } from 'vue';
 import { useRecordStore } from 'src/stores/Record';
 import { Records } from 'src/stores/Record';
+import { useGlobalStore } from 'src/stores/global';
+import { inject } from 'vue';
 
 //initialising stores
 const recordStore = useRecordStore();
+const globalStore = useGlobalStore();
 
 const processing = ref(false);
 const records: Ref<Records> = ref({patient_name: '', diseases: []});
+  let search = ref(inject('search') as string);
+
+  const searchRecords = computed(()=>{
+    const trimmedQuery = search.value.trim().toLowerCase();
+    const searchTerms = trimmedQuery.split(' ');
+    // Create regex patterns for each search term
+    const regexes = searchTerms.map(term => new RegExp(term, 'i'));
+    if(trimmedQuery == ''){
+      return records.value.diseases;
+    }else {
+      return records.value.diseases.filter((disease) => {
+        return regexes.some(regex=> regex.test(disease.disease_name))||
+              disease.symptoms.filter(symptom=>regexes.some(regex=>regex.test(symptom))).length > 0||
+              disease.modalDay.filter(day=>regexes.some(regex=>regex.test(day))).length>0||
+              disease.modalMonth.filter(month=>regexes.some(regex=>regex.test(month))).length>0||
+              regexes.some(regex=>regex.test(disease.date))
+      });
+    }
+  })
 
 onMounted(() => {
 
@@ -79,6 +101,8 @@ onMounted(() => {
     processing.value = false;
   }
 }
+
+  globalStore.showSearch = true;
 
   fetchRecords();
 
