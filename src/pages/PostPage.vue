@@ -1,8 +1,8 @@
 <template>
   <q-page>
     <div class="grid justify-around mt-5 gap-3 sm:grid-flow-col">
-      <div class="col-span-4 sm:ml-5">
-        <q-img :src="postStore.post?.thumbnail ?? 'https://picsum.photos/800/400'" :ratio="16 / 9" class="rounded-2xl"/>
+      <div class="col-span-4 sm:ml-5 w-full">
+        <q-img :src="postStore.post?.thumbnail ?? 'https://picsum.photos/800/400'" :ratio="16 / 9" class="rounded-2xl w-full"/>
       </div>
       <div class="col-span-8">
         <q-btn
@@ -12,10 +12,33 @@
           flat
           round
         />
-        <h1 class="font-semibold text-center text-sm">{{ postStore.post?.title }}</h1>
-        <div v-html="postStore.post?.body"></div>
+        <h1 class="font-semibold text-2xl uppercase mb-10">{{ postStore.post?.title }}</h1>
+        <div v-html="postStore.post?.body"  class="max-w-md "></div>
+
+        <div class="mt-10">
+          <h1 class="text-xl font-bold mb-10">Symptoms</h1>
+          <div>
+            <ul>
+              <li v-for="symptom in postStore.post?.disease.symptoms" :key="symptom.id" class="list-disc">
+                {{ symptom.description }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-10">
+          <h1 class="text-xl font-bold mb-10">Related Drugs</h1>
+          <div>
+            <ul>
+              <li v-for="drug in postStore.post?.disease.drugs" :key="drug.id" class="list-disc">
+                {{ drug.name }}
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
+
+
 
     <div class="mt-20">
       <!-- Comment form -->

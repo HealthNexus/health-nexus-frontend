@@ -21,7 +21,8 @@ const routes: RouteRecordRaw[] = [
 
       // Posts routes
       { path: 'posts/', component: () => import('pages/IndexPage.vue'), name:'posts' },
-      {path: 'posts/:id', name:'post', component: ()=> import('pages/PostPage.vue') }
+      {path: 'posts/:id', name:'post', component: ()=> import('pages/PostPage.vue') },
+      {path: 'posts/create', name:'createPost', component: ()=> import('pages/CreatePostForm.vue') }
     ],
   },
 

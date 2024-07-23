@@ -4,7 +4,7 @@ import { ref, Ref } from 'vue';
 import axios from 'axios';
 import { useAuthStore } from './auth';
 import { Notify } from 'quasar'
-interface Post {
+export interface Post {
   id: number;
  title: string;
  excerpt: string;
@@ -23,6 +23,25 @@ interface Post {
     name: string;
   };
   comments: Comments[]|null;
+  disease: {
+    id: number;
+    name: string;
+
+    symptoms: {
+      id: number;
+      description: string;
+    }[]
+
+    drugs:{
+      id: number;
+      name: string;
+    }[]
+
+    categories:{
+      id: number;
+      name: string
+    }[];
+  };
   }
 
  export interface Comments{
@@ -73,61 +92,11 @@ export const usePostStore = defineStore('post', () => {
   const fetchPosts = async () => {
     try{
       const response = await axios.get(`${API_URL}/posts`);
-    posts.value = response.data.posts;
+     posts.value = response.data.posts;
     return posts;
     }catch(error){
       console.log(error)
     }
-  };
-
-
-  // Store the post in the database
-  const storePost = async (title: string, excerpt: string, body: string, disease_id: number, thumbnail: string|null) => {
-    try{
-      const token = localStorage.getItem('auth_token');
-      if (!token) throw new Error('No token found');
-
-      const response = await axios.post(`${API_URL}/posts/store `, {
-        title,
-        excerpt,
-        body,
-        disease_id,
-        thumbnail,
-      },
-      {
-        headers: {Authorization: `Bearer ${token}`},
-      }
-    );
-      Notify.create({
-        message: response.data.message,
-        color: 'green'
-      })
-    }catch(error){
-      console.log(error)
-    }
-  };
-
-  //search through posts on the client side, utilise regex for complex searches
-  const searchPosts = (query: string, category: string) => {
-    const trimmedQuery = query.trim().toLowerCase();
-    const filteredPosts = posts.value?.filter((post) => {
-      return post.title.toLowerCase().includes(trimmedQuery) ||
-             post.excerpt.toLowerCase().includes(trimmedQuery)||
-             post.body.toLowerCase().includes(trimmedQuery);
-    });
-  // handle epty search to return all posts
-    if(category === 'all'){
-
-      fetchPosts();
-      category = '';
-    }
-    else if (filteredPosts === undefined) {
-      posts.value = [];
-    }
-    else {
-      posts.value = filteredPosts;
-    }
-    return posts;
   };
 
   //post comment http://127.0.0.1:8000/api/posts/1/comments
@@ -172,9 +141,15 @@ export const usePostStore = defineStore('post', () => {
     }
   };
 
-
-
-
+// fetch categories
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/diseases/categories`);
+      return response.data.categories;
+    } catch(error){
+      console.log(error)
+     }
+  }
 
 
 
@@ -183,10 +158,9 @@ export const usePostStore = defineStore('post', () => {
     posts,
     fetchPosts,
     fetchPost,
-    searchPosts,
     postComment,
     deleteComment,
-    storePost
+    fetchCategories
   };
 });
 

@@ -7,35 +7,29 @@
         class="underline hover:text-blue-500"
         @click="fetchPosts"
         >All</button>
-        <q-select
-          v-model="select"
-          :options="
-            [
-              {label: 'All Posts', value:'all'},
-              {label: 'viral', value:'virus'},
-              {label: 'bacterial', value:'bacteria'},
-              {label: 'fungal', value:'fungi'},
-              {label: 'chronic', value:'chronic'},
-              {label: 'genetic', value:'genetic'},
-            ]
-          "
-          label="Select a post"
-          dense
-          outlined
-          class="sm:w-44 w-32"
+          <!-- Select Categories -->
+          <q-select
+            v-model="category"
+            :loading="processing"
+            :options="categories"
+            option-label="name"
+            label="Select Category"
+            class="mb-8"
+            style="width: 200px"
+            outlined
+            />
 
-        />
       </q-toolbar>
 
     </div>
 
     <div
       class="grid sm:grid-flow-row sm:grid-cols-3 gap-5 mt-5 ml-auto mr-auto p-5"
-      style="max-width: 100vw" v-if="postStore.posts.length > 0">
+      style="max-width: 100vw" v-if="posts.length > 0">
       <q-card
         class=""
         style="max-width: 400px"
-        v-for="post in postStore.posts"
+        v-for="post in searchPosts"
         :key="post.id"
       >
         <q-img :src="post?.thumbnail ?? `https://picsum.photos/id/${post.id + 10}/800/400`" :ratio="16 / 9">
@@ -46,6 +40,15 @@
         <q-card-section>
           {{ post.excerpt }}
         </q-card-section>
+        <!-- show categories -->
+        <q-card-actions>
+          <q-chip
+            v-for="category in post.disease.categories"
+            :key="category.id"
+            :label="category.name"
+            class="q-mr-sm"
+          />
+        </q-card-actions>
         <div class="flex justify-end">
           <q-btn flat>
             <q-icon name="keyboard_double_arrow_right" @click="viewPost(post.id)" />
@@ -67,27 +70,52 @@
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted, ref, watch} from 'vue';
+import { computed, inject, onMounted, Ref, ref, watch} from 'vue';
 // import axiosInstance from 'src/axios';
 import { usePostStore } from 'src/stores/Posts';
 
 import { useGlobalStore } from 'src/stores/global';
 
 import { useRouter } from 'vue-router';
+import { Post } from 'src/stores/Posts';
 
 const router = useRouter();
 const globalStore = useGlobalStore();
 
 const postStore = usePostStore();
 let search = ref(inject('search') as string);
-let select = ref({label: '', value: ''});
+const category: Ref<{id: number, name: string}> = ref({id: 0, name: 'All'});
+const categories: Ref<{id: number, name: string}[]> = ref([]);
+const processing = ref(false);
+
+const posts: Ref<Post[]> = ref([]);
 
 
-//a watcher to watch changes in search
-watch([() => search.value, () => select.value.value], async ([newSearch, newSelect]) => {
-  console.log('watch triggered:', newSearch, newSelect);
-  postStore.searchPosts(newSearch, newSelect);
+// watch changes in category
+watch([() => category.value.name], async ([selectedCategory]) => {
+  console.log('watch triggered:', selectedCategory);
+  filterPostsByCategory(selectedCategory);
 });
+
+  //search through posts on the client side, utilise regex for complex searches
+  const searchPosts = computed(()=>{
+    const trimmedQuery = search.value.trim().toLowerCase();
+    if(trimmedQuery == ''){
+      return posts.value;
+    }else {
+      return posts.value.filter((post) => {
+        return post.title.toLowerCase().includes(trimmedQuery) ||
+             post.excerpt.toLowerCase().includes(trimmedQuery)||
+             post.body.toLowerCase().includes(trimmedQuery)
+      });
+    }
+  })
+function filterPostsByCategory(selectedCategory: string) {
+  // logic to filter posts without using postStore
+  return posts.value.filter((post) => {
+    return post.disease.categories.filter((category) => category.name === selectedCategory)
+    })
+  }
 
 
 
@@ -100,8 +128,24 @@ async function fetchPosts() {
   search.value = '';
 }
 
+async function fetchCategories(){
+  processing.value = true;
+
+  categories.value = await postStore.fetchCategories();
+
+  processing.value = false;
+
+}
+
+fetchCategories();
+
 onMounted(() => {
-  postStore.fetchPosts();
+  async function fetchData() {
+    await postStore.fetchPosts();
+    posts.value =postStore.posts;
+    console.log(posts.value)
+  }
+  fetchData();
   globalStore.showSearch = true;
 
 });

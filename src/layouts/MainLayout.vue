@@ -91,7 +91,7 @@
         </q-item>
 
         <!-- Add Post -->
-        <q-item clickable v-ripple :to="{ name: 'test' }">
+        <q-item clickable v-ripple :to="{ name: 'createPost' }">
           <q-item-section class="flex flex-row gap-5 justify-start">
             <q-item-label class="capitalize">Add post</q-item-label>
             <!-- add icon -->
