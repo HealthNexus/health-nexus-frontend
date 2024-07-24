@@ -19,6 +19,13 @@ interface User {
   updated_at: string;
   avatar: string | null;
   hospital_id: number;
+  role: Role;
+}
+
+interface Role{
+  id: number;
+  name: string;
+  slug: string;
 }
 
 interface Data {
