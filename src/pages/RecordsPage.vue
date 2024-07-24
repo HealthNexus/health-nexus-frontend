@@ -1,6 +1,7 @@
 <template>
   <q-page padding>
-    <div class="grid sm:grid-cols-3 gap-3" v-if="!processing">
+    <button class="font-semibold text-black my-10" @click="showAnalytics = !showAnalytics">{{  showAnalytics?'Hide Analytics' : 'Show Analytics'  }}</button>
+    <div class="grid sm:grid-cols-3 gap-3" v-if="!processing && !showAnalytics">
       <q-card class="my-card" flat bordered v-for="disease in searchRecords" :key="disease.id">
         <q-item>
           <q-item-section avatar>
@@ -48,6 +49,19 @@
       </q-card>
     </div>
 
+    <div v-if="showAnalytics">
+      <!-- select between Bar, Pie and Line -->
+      <div class="q-gutter-sm">
+        <q-radio v-model="chartType" val="bar" label="Bar" />
+        <q-radio v-model="chartType" val="line" label="Line" />
+        <q-radio v-model="chartType" val="pie" label="Pie" />
+      </div>
+      <div v-for="data in dataSet" :key="data.data.datasets[0].label">
+        <Bar :data="data.data" :options="data.options" v-if="chartType == 'bar'"/>
+        <Line :data="data.data" :options="data.options" v-if="chartType == 'line'"/>
+        <Pie :data="data.data" :options="data.options" v-if="chartType == 'pie'"/>
+      </div>
+    </div>
     <center>
       <q-spinner-gears color="cyan" size="500" v-if="processing"/>
     </center>
@@ -56,10 +70,14 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, Ref, ref } from 'vue';
-import { useRecordStore } from 'src/stores/Record';
+import { graphData, useRecordStore } from 'src/stores/Record';
 import { Records } from 'src/stores/Record';
 import { useGlobalStore } from 'src/stores/global';
 import { inject } from 'vue';
+import { Bar, Line, Pie } from 'vue-chartjs'
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement, ArcElement} from 'chart.js'
+
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement, ArcElement)
 
 //initialising stores
 const recordStore = useRecordStore();
@@ -67,7 +85,12 @@ const globalStore = useGlobalStore();
 
 const processing = ref(false);
 const records: Ref<Records> = ref({patient_name: '', diseases: []});
-  let search = ref(inject('search') as string);
+const search = ref(inject('search') as string);
+const showAnalytics = ref(false);
+const dataSet: Ref<graphData[]> = ref([]);
+const chartType = ref('bar');
+
+
 
   const searchRecords = computed(()=>{
     const trimmedQuery = search.value.trim().toLowerCase();
@@ -87,6 +110,7 @@ const records: Ref<Records> = ref({patient_name: '', diseases: []});
     }
   })
 
+
 onMounted(() => {
 
   async function fetchRecords() {
@@ -100,11 +124,23 @@ onMounted(() => {
   }finally{
     processing.value = false;
   }
-}
+  }
+  async function fetchData(){
+    try{
+      processing.value = true;
+      await recordStore.fetchData();
+      dataSet.value = recordStore.data;
+    }catch(e){
+      console.log(e);
+    }finally{
+      processing.value = false;
+    }
+  }
 
   globalStore.showSearch = true;
 
   fetchRecords();
+  fetchData();
 
 });
 
