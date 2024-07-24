@@ -1,6 +1,6 @@
 <template>
   <q-page class="landing-page">
-    <q-header elevated class="bg-dark text-white"  v-if="showHeader">
+    <q-header elevated class="bg-dark text-white" v-if="showHeader">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
 
@@ -33,7 +33,6 @@
           Welcome {{ authStore.user?.name }}
         </div>
 
-
         <!-- Add search box that is allingned at the center -->
         <input
           type="text"
@@ -44,8 +43,16 @@
         />
 
         <q-tabs align="left" class="mobile-hide gt-xs">
-          <q-route-tab v-if="!authStore.loggedIn"  :to="{ name: 'signin' }" label="sign in" />
-          <q-route-tab v-if="!authStore.loggedIn" :to="{ name: 'signup' }" label="sign up" />
+          <q-route-tab
+            v-if="!authStore.loggedIn"
+            :to="{ name: 'signin' }"
+            label="sign in"
+          />
+          <q-route-tab
+            v-if="!authStore.loggedIn"
+            :to="{ name: 'signup' }"
+            label="sign up"
+          />
         </q-tabs>
       </q-toolbar>
     </q-header>
@@ -53,38 +60,57 @@
     <div class="hero">
       <div class="hero-text">
         <h1 class="main-title">Welcome to Health Nexus</h1>
-        <p class="subtitle">Your Ultimate Solution for all health and wellness activity!</p>
+        <p class="subtitle">
+          Your Ultimate Solution for all health and wellness activity!
+        </p>
         <div class="buttons">
-          <q-btn color="primary" label="Live Preview" class="rounded-button" />
-          <q-btn color="primary" outline label="Introduction" class="rounded-button" />
-          <q-btn color="primary" outline label="Quick Start" class="rounded-button" />
+          <q-btn color="primary" label="Sign Up" class="rounded-button" />
+          <q-btn
+            color="primary"
+            outline
+            label="Sign In"
+            class="rounded-button"
+          />
+          <q-btn color="primary" outline label="Blogs" class="rounded-button" />
         </div>
       </div>
-      <q-img src="/src/assets/flat-hand-drawn-patient-taking-medical-examination.png" class="hero-image" />
+        <q-img
+          src="/src/assets/flat-hand-drawn-patient-taking-medical-examination.png"
+          class="hero-image"
+        />
     </div>
 
     <div class="features row justify-around q-gutter-lg">
       <q-card class="feature col-12 col-md-3 rounded-card">
         <q-card-section>
-          <q-icon name="flash_on" size="40px" />
-          <h2 class="feature-title">Quick Start</h2>
-          <p class="feature-text">Accelerate your development with this incredible theme. Utilize Quasar Framework's HTML snippets to swiftly initiate and effortlessly configure theming, styling.</p>
+          <q-icon name="dvr" size="40px" />
+          <h2 class="feature-title">Health Records</h2>
+          <p class="feature-text">
+            Securely store and manage your medical history for easy access and
+            sharing with healthcare providers.
+          </p>
         </q-card-section>
       </q-card>
 
       <q-card class="feature col-12 col-md-3 rounded-card">
         <q-card-section>
-          <q-icon name="folder_open" size="40px" />
-          <h2 class="feature-title">Repository Access</h2>
-          <p class="feature-text">Get the private repository access to track the premium version development easily. Fork the repository to get the seamless updates.</p>
+          <q-icon name="vaccines" size="40px" />
+          <h2 class="feature-title">E-pharmacy</h2>
+          <p class="feature-text">
+            Order medications and health supplies online and have them delivered
+            to your doorstep.
+          </p>
         </q-card-section>
       </q-card>
 
       <q-card class="feature col-12 col-md-3 rounded-card">
         <q-card-section>
-          <q-icon name="star" size="40px" />
-          <h2 class="feature-title">Premium Components</h2>
-          <p class="feature-text">Get access to the premium components and features to make your application more powerful and elegant.</p>
+          <q-icon name="chat" size="40px" />
+          <h2 class="feature-title">ChatBox</h2>
+          <p class="feature-text">
+            Get instant support and answers to your health questions 24/7 with
+            our integrated chatbot.
+          </p>
         </q-card-section>
       </q-card>
     </div>
@@ -99,8 +125,8 @@
 
 <script>
 export default {
-  name: 'LandingPage'
-}
+  name: 'LandingPage',
+};
 </script>
 
 <style scoped>
@@ -126,6 +152,8 @@ export default {
 
 .hero-image {
   max-width: 45%;
+
+  background: radial-gradient(circle, rgba(154, 162, 230, 0.5), rgba(241, 167, 232, 0) 50%);
 }
 
 .main-title {
@@ -186,4 +214,7 @@ export default {
 .footer-content {
   text-align: center;
 }
+
+
+
 </style>
