@@ -17,8 +17,35 @@ export interface Records {
   diseases: RecDisease[];
 }
 
+interface ChartTitleOptions {
+  display: boolean;
+  text: string;
+  plugins?: {
+    title?: ChartTitleOptions;
+  };
+  font?: {
+    size: number;
+  };
+}
+
+export interface graphData{
+  data:CData;
+   options: ChartTitleOptions;
+}
+export interface CData {
+  labels: string[];
+  datasets: Dataset[];
+}
+
+interface Dataset {
+  label: string;
+  backgroundColor: string;
+  data: number[];
+}
+
 export const useRecordStore = defineStore('record', ()=>{
   const records: Ref<Records> = ref({patient_name: '', diseases: []});
+  const data: Ref<graphData[]> = ref([]);
 
   const fetchRecords = async () => {
      try{
@@ -38,8 +65,68 @@ export const useRecordStore = defineStore('record', ()=>{
     }
   }
 
+  const monthDiseaseData = async () => {
+     try{
+      const token = localStorage.getItem('auth_token');
+      if (!token) throw new Error('No token found');
+
+      const response = await axios.get('http://localhost:8000/api/month-disease-data', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+        })
+      console.log('data', response.data);
+      return response.data;
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  const dayDiseaseData = async () => {
+     try{
+      const token = localStorage.getItem('auth_token');
+      if (!token) throw new Error('No token found');
+
+      const response = await axios.get('http://localhost:8000/api/day-disease-data', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+        })
+      console.log('data', response.data);
+      return response.data;
+    }catch(error){
+      console.log(error);
+    }
+  }
+  const yearDiseaseData = async () => {
+     try{
+      const token = localStorage.getItem('auth_token');
+      if (!token) throw new Error('No token found');
+
+      const response = await axios.get('http://localhost:8000/api/year-disease-data', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+        })
+      console.log('data', response.data);
+     return response.data;
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  const fetchData = async ()=>{
+    const daysData = await dayDiseaseData();
+    const monthsData = await monthDiseaseData();
+    const yearsData = await yearDiseaseData();
+    data.value.push(daysData, monthsData, yearsData);
+  }
+
+
   return{
     fetchRecords,
-    records
+    records,
+    fetchData,
+    data
   }
 })
