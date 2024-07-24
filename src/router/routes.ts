@@ -21,7 +21,7 @@ const routes: RouteRecordRaw[] = [
       { path: 'records', name:'records', component: () => import('pages/RecordsPage.vue') },
       { path: 'landing', name:'Landing', component: () => import('src/pages/LandingPage.vue') },
       { path: 'record/create', name:'record.create', component: () => import('src/pages/CreateRecordPage.vue') },
-      { path: 'records', name:'Records', component: () => import('src/pages/RecordPageTest.vue') },
+      { path: 'record', name:'Records', component: () => import('src/pages/RecordPageTest.vue') },
       { path: 'blogs', name: 'Blogs', component: () => import('src/pages/BlogTest.vue')},
 
       // Posts routes
