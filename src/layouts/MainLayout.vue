@@ -116,6 +116,15 @@
             <q-icon name="description" class="text-black" />
           </q-item-section>
         </q-item>
+
+        <!-- ADd Record -->
+        <q-item clickable v-ripple  v-if="authStore.loggedIn && authStore.user.role.slug == 'admin'" :to="{name: 'record.create'}">
+          <q-item-section class="flex flex-row gap-5 justify-start">
+            <q-item-label class="capitalize">Add Record</q-item-label>
+            <!-- add icon -->
+            <q-icon name="add" class="text-black" />
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
