@@ -29,6 +29,20 @@ const routes: RouteRecordRaw[] = [
     ],
   },
 
+    // New pages not using MainLayout
+    {
+      path: '/about',
+      component: () => import('pages/AboutPage.vue'), // Replace with your page component
+    },
+    {
+      path: '/blogs',
+      component: () => import('pages/BlogTest.vue'), // Replace with your page component
+    },
+    {
+      path: '/contact',
+      component: () => import('pages/ContactPage.vue'), // Replace with your page component
+    },
+
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
