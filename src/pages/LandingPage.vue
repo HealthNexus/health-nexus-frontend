@@ -64,14 +64,15 @@
           Your Ultimate Solution for all health and wellness activity!
         </p>
         <div class="buttons">
-          <q-btn color="primary" label="Sign Up" class="rounded-button" />
+          <q-btn color="primary" label="Sign Up" class="rounded-button" :to="{name: 'signup'}" />
           <q-btn
             color="primary"
             outline
             label="Sign In"
             class="rounded-button"
+            :to="{name:'signin'}"
           />
-          <q-btn color="primary" outline label="Blogs" class="rounded-button" />
+          <q-btn color="primary" outline label="Blogs" class="rounded-button" :to="{name:'posts'}"/>
         </div>
       </div>
         <q-img
