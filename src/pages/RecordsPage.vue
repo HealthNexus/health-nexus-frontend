@@ -38,9 +38,9 @@
 
         <q-separator vertical />
 
-          <q-card-section class="col-5">
+          <q-card-section>
             <ul>
-                <li v-for="symptom in disease.symptoms" :key="symptom" class="list-disc ml-5">
+                <li v-for="symptom in disease.symptoms" :key="symptom" class="list-disc ml-2 sm:text-xs md:text-lg">
                   {{  symptom }}
                 </li>
             </ul>
@@ -58,7 +58,7 @@
       </div>
       <div v-for="data in dataSet" :key="data.data.datasets[0].label">
         <Bar :data="data.data" :options="data.options" v-if="chartType == 'bar'"/>
-        <Line :data="data.data" :options="data.options" v-if="chartType == 'line'"/>
+        <Line :data="data.data" :options="data.options" v-if="chartType == 'line'" :style="{height: '50vh', pointBorderColor:'#000'}"/>
         <Pie :data="data.data" :options="data.options" v-if="chartType == 'pie'"/>
       </div>
     </div>
@@ -145,3 +145,9 @@ onMounted(() => {
 });
 
 </script>
+
+<style>
+.try{
+  background-color: #413d3d81;
+}
+</style>
