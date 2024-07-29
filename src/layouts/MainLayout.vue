@@ -32,6 +32,7 @@
         <div class="q-mx-auto" v-if="authStore.loggedIn">
           Welcome {{ authStore.user?.name }}
         </div>
+        <div class="q-mx-auto" v-else></div>
 
 
         <!-- Add search box that is allingned at the center -->
