@@ -74,7 +74,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       loggedIn.value = true;
       localStorage.setItem('loggedIn', JSON.stringify(loggedIn.value));
-      router.push({name: 'posts'});
+      router.push({name: 'Landing'});
     } catch(error){
       const axiosErr = error as AxiosError;
       const data = axiosErr.response?.data as Data
@@ -108,8 +108,6 @@ export const useAuthStore = defineStore('auth', () => {
 
       message.value.name = response.data.message;
       message.value.success = true;
-
-      router.push({name: 'dashboard'});
     }catch( error){
       const axiosErr = error as AxiosError;
       const data = axiosErr.response?.data as Data

@@ -44,9 +44,9 @@
           v-if="globalStore.showSearch"
         />
 
-        <q-tabs align="left" class="mobile-hide gt-xs">
-          <q-route-tab v-if="!authStore.loggedIn"  :to="{ name: 'signin' }" label="sign in" />
-          <q-route-tab v-if="!authStore.loggedIn" :to="{ name: 'signup' }" label="sign up" />
+        <q-tabs align="left" class="mobile-hide gt-xs py-2">
+          <q-route-tab v-if="!authStore.loggedIn"  :to="{ name: 'signin' }" label="sign in"  class="hover:bg-blue-500 rounded-full border border-blue-600 mr-2"/>
+          <q-route-tab v-if="!authStore.loggedIn" :to="{ name: 'signup' }" label="sign up" class="hover:bg-blue-500 rounded-full border border-blue-600"/>
         </q-tabs>
       </q-toolbar>
     </q-header>

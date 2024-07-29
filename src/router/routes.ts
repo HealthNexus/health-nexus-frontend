@@ -8,13 +8,13 @@ const routes: RouteRecordRaw[] = [
     beforeEnter: (to, from, next) => {
       const authStore = useAuthStore();
       if (authStore.loggedIn && (to.name === 'signin' || to.name === 'signup')) {
-        next({name: from.name || 'dashboard'})
+        next({name: from.name || 'home'})
       } else {
         next()
       }
     },
     children: [
-      { path: '', name:'home', component: () => import('pages/IndexPage.vue') },
+      { path: '', name:'home', component: () => import('pages/LandingPage.vue') },
       { path: 'signup', name:'signup', component: () => import('pages/signUpPage.vue') },
       { path: 'signin', name:'signin', component: () => import('pages/signInPage.vue') },
       { path: 'test', name:'test', component: () => import('pages/TestPage.vue') },
