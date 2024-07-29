@@ -65,6 +65,26 @@ export const useRecordStore = defineStore('record', ()=>{
     }
   }
 
+  const createRecords = async (userId:number|undefined, diseaseId: number|undefined, symptomIds: number[], drugIds:number[])=>{
+    try{
+      const token = localStorage.getItem('auth_token');
+      if (!token) throw new Error('No token found');
+      const response = await axios.post(`http://localhost:8000/api/records/${userId}/store`, {
+        disease_id: diseaseId,
+        symptom_Ids: symptomIds,
+        drug_Ids: drugIds
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+      })
+      console.log(response.data);
+    }catch(error){
+      console.error(error);
+    }
+
+  }
+
   const monthDiseaseData = async () => {
      try{
       const token = localStorage.getItem('auth_token');
@@ -127,6 +147,7 @@ export const useRecordStore = defineStore('record', ()=>{
     fetchRecords,
     records,
     fetchData,
-    data
+    data,
+    createRecords
   }
 })
