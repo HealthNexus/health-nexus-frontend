@@ -2,12 +2,7 @@
   <q-page class="flex justify-between">
     <div class="mr-auto ml-auto mt-4">
       <!-- add a toolbar for searching and selecting post via a drop down menu-->
-      <q-toolbar class="grid grid-flow-col gap-5">
-        <button
-        class="underline hover:text-blue-500"
-        @click="fetchPosts"
-        >All</button>
-          <!-- Select Categories -->
+      <q-toolbar class="grid grid-flow-col gap-5">       <!-- Select Categories -->
           <q-select
             v-model="category"
             :loading="processing"
@@ -121,11 +116,6 @@ function filterPostsByCategory(selectedCategory: string) {
 
 async function viewPost(id: number) {
   router.push({ name: 'post', params: { id } });
-}
-
-async function fetchPosts() {
-  postStore.fetchPosts();
-  search.value = '';
 }
 
 async function fetchCategories(){
