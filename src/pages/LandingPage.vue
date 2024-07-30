@@ -70,8 +70,15 @@
 
 <script lang="ts" setup>
 import { useAuthStore } from 'src/stores/auth';
+import { useGlobalStore } from 'src/stores/global';
+import { onMounted } from 'vue';
 
 const authStore = useAuthStore();
+const globalStore = useGlobalStore();
+
+onMounted(()=>{
+  globalStore.showSearch = false;
+})
 </script>
 
 <style scoped>
