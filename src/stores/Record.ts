@@ -135,6 +135,39 @@ export const useRecordStore = defineStore('record', ()=>{
     }
   }
 
+  const generalMonthVsDiseaseCount = async (year:number) => {
+     try{
+      const token = localStorage.getItem('auth_token');
+      if (!token) throw new Error('No token found');
+
+      const response = await axios.get(`http://localhost:8000/api/records/analytics/general/${year}/months`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+        })
+      console.log('generalMonthYear', response.data);
+     return response.data;
+    }catch(error){
+      console.log(error);
+    }
+  }
+  const generalYearVsDiseaseCount = async (start:number, end:number) => {
+     try{
+      const token = localStorage.getItem('auth_token');
+      if (!token) throw new Error('No token found');
+
+      const response = await axios.get(`http://localhost:8000/api/records/analytics/general/${start}/${end}/years`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+        })
+      console.log('generalMonthYear', response.data);
+     return response.data;
+    }catch(error){
+      console.log(error);
+    }
+  }
+
   const fetchData = async ()=>{
     const daysData = await dayDiseaseData();
     const monthsData = await monthDiseaseData();
@@ -148,6 +181,8 @@ export const useRecordStore = defineStore('record', ()=>{
     records,
     fetchData,
     data,
-    createRecords
+    createRecords,
+    generalMonthVsDiseaseCount,
+    generalYearVsDiseaseCount
   }
 })
