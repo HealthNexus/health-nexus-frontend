@@ -126,6 +126,15 @@
             <q-icon name="add" class="text-black" />
           </q-item-section>
         </q-item>
+
+        <!-- ADd Record -->
+        <q-item clickable v-ripple  v-if="authStore.loggedIn" :to="{name: 'general.analytics'}">
+          <q-item-section class="flex flex-row gap-5 justify-start">
+            <q-item-label class="capitalize">General Analytics</q-item-label>
+            <!-- add icon -->
+            <q-icon name="analytics" class="text-black" />
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
