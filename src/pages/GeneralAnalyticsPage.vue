@@ -7,6 +7,11 @@
         <q-radio v-model="chartType" val="line" label="Line" />
         <q-radio v-model="chartType" val="pie" label="Pie" />
       </div>
+      <div>
+        <template v-for="(data,index) in dataSet" :key="data.options.plugins!.title!.text">
+          <q-radio v-model="displayChart" :val="index" :label="data.options.plugins?.title?.text"/>
+        </template>
+    </div>
       <div v-for="data in dataSet" :key="data.data.datasets[0].label">
         <Bar :data="data.data" :options="data.options" v-if="chartType == 'bar'"/>
         <Line :data="data.data" :options="data.options" v-if="chartType == 'line'" :style="{height: '50vh', pointBorderColor:'#000'}"/>
@@ -35,6 +40,8 @@ const globalStore = useGlobalStore();
 const processing = ref(false);
 const dataSet: Ref<graphData[]> = ref([]);
 const chartType = ref('bar');
+const displayChart = ref(0);
+
 
 
 
