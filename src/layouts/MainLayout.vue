@@ -100,15 +100,6 @@
           </q-item-section>
         </q-item>
 
-        <!-- Dashboard -->
-        <q-item  clickable v-ripple :to="{ name: 'dashboard' }" v-if="authStore.loggedIn">
-          <q-item-section class="flex flex-row gap-5 justify-start">
-            <q-item-label class="capitalize">dashboard</q-item-label>
-            <!-- add icon -->
-            <q-icon name="dashboard" class="text-black" />
-          </q-item-section>
-        </q-item>
-
         <!-- Health Records -->
         <q-item clickable v-ripple  v-if="authStore.loggedIn" :to="{name: 'records'}">
           <q-item-section class="flex flex-row gap-5 justify-start">
