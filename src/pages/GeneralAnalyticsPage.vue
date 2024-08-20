@@ -7,31 +7,85 @@
         <q-radio v-model="chartType" val="line" label="Line" />
         <q-radio v-model="chartType" val="pie" label="Pie" />
       </div>
-      <div>
-        <template v-for="(data,index) in dataSet" :key="data.options.plugins!.title!.text">
-          <q-radio v-model="displayChart" :val="index" :label="data.options.plugins?.title?.text"/>
+      <div class="flex flex-col">
+        <template
+          v-for="(data, index) in dataSet"
+          :key="data.options.plugins!.title!.text"
+        >
+          <q-radio
+            v-model="displayChart"
+            :val="index"
+            :label="data.options.plugins?.title?.text"
+          />
         </template>
-    </div>
+        <label>
+          Year:
+          <input
+          v-if="displayChart == 0"
+          type="number"
+          min="2018"
+          max="2024"
+          v-model="year"
+          class="border border-black py-2 px-3 rounded-xl w-1/12"
+        />
+      </label>
+      </div>
       <div v-for="data in dataSet" :key="data.data.datasets[0].label">
-        <Bar :data="data.data" :options="data.options" v-if="chartType == 'bar'"/>
-        <Line :data="data.data" :options="data.options" v-if="chartType == 'line'" :style="{height: '50vh', pointBorderColor:'#000'}"/>
-        <Pie :data="data.data" :options="data.options" v-if="chartType == 'pie'"/>
+        <Bar
+          :data="data.data"
+          :options="data.options"
+          v-if="chartType == 'bar'"
+          :style="{ height: '50vh', pointBorderColor: '#000' }"
+        />
+        <Line
+          :data="data.data"
+          :options="data.options"
+          v-if="chartType == 'line'"
+          :style="{ height: '50vh', pointBorderColor: '#000' }"
+        />
+        <Pie
+          :data="data.data"
+          :options="data.options"
+          v-if="chartType == 'pie'"
+          :style="{ height: '50vh', pointBorderColor: '#000' }"
+        />
       </div>
     </div>
     <center>
-      <q-spinner-gears color="cyan" size="500" v-if="processing"/>
+      <q-spinner-gears color="cyan" size="500" v-if="processing" />
     </center>
   </q-page>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, Ref, ref } from 'vue';
+import { onMounted, Ref, ref, watch } from 'vue';
 import { graphData, useRecordStore } from 'src/stores/Record';
 import { useGlobalStore } from 'src/stores/global';
-import { Bar, Line, Pie } from 'vue-chartjs'
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement, ArcElement} from 'chart.js'
+import { Bar, Line, Pie } from 'vue-chartjs';
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  ArcElement,
+} from 'chart.js';
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement, ArcElement)
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  ArcElement
+);
 
 //initialising stores
 const recordStore = useRecordStore();
@@ -41,30 +95,25 @@ const processing = ref(false);
 const dataSet: Ref<graphData[]> = ref([]);
 const chartType = ref('bar');
 const displayChart = ref(0);
+const year = ref(2024);
 
-
-
+watch(year, monthsVsDiseases);
+async function monthsVsDiseases() {
+  processing.value = true;
+  const data = (await recordStore.generalMonthVsDiseaseCount(year.value)) as graphData;
+  dataSet.value[0] = data; //I assume that the months dataset should be the first in the dataset array followed by year dataset
+  processing.value = false;
+}
 
 onMounted(() => {
-
-
-  async function monthsVsDiseases() {
-    processing.value = true;
-    const data = await recordStore.generalMonthVsDiseaseCount(2019) as graphData;
-    dataSet.value.push(data);
-    processing.value = false;
-  }
   globalStore.showSearch = false;
 
   monthsVsDiseases();
-
-
 });
-
 </script>
 
 <style>
-.try{
+.try {
   background-color: #413d3d81;
 }
 </style>
