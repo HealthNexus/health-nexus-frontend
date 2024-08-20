@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, onMounted, Ref, ref, watch} from 'vue';
+import { computed, inject, onMounted, Ref, ref} from 'vue';
 // import axiosInstance from 'src/axios';
 import { usePostStore } from 'src/stores/Posts';
 
@@ -86,31 +86,27 @@ const processing = ref(false);
 const posts: Ref<Post[]> = ref([]);
 
 
-// watch changes in category
-watch([() => category.value.name], async ([selectedCategory]) => {
-  console.log('watch triggered:', selectedCategory);
-  filterPostsByCategory(selectedCategory);
-});
-
   //search through posts on the client side, utilise regex for complex searches
   const searchPosts = computed(()=>{
     const trimmedQuery = search.value.trim().toLowerCase();
-    if(trimmedQuery == ''){
+    if(trimmedQuery == '' && category.value.name == 'All'){
       return posts.value;
     }else {
       return posts.value.filter((post) => {
-        return post.title.toLowerCase().includes(trimmedQuery) ||
+        let cat = post.disease.categories.some(cat=>cat.name == category.value.name)
+        console.log(cat)
+        return (post.title.toLowerCase().includes(trimmedQuery) ||
              post.excerpt.toLowerCase().includes(trimmedQuery)||
-             post.body.toLowerCase().includes(trimmedQuery)
+             post.body.toLowerCase().includes(trimmedQuery) )&&cat
       });
     }
   })
-function filterPostsByCategory(selectedCategory: string) {
-  // logic to filter posts without using postStore
-  return posts.value.filter((post) => {
-    return post.disease.categories.filter((category) => category.name === selectedCategory)
-    })
-  }
+// function filterPostsByCategory(selectedCategory: string) {
+//   // logic to filter posts without using postStore
+//   return posts.value.filter((post) => {
+//     return post.disease.categories.filter((category) => category.name === selectedCategory)
+//     })
+//   }
 
 
 
