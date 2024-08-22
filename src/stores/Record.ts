@@ -2,6 +2,7 @@ import { ref, Ref } from 'vue';
 // Record Store
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import { Notify } from 'quasar';
 
 export interface RecDisease{
   id: number;
@@ -153,6 +154,10 @@ export const useRecordStore = defineStore('record', ()=>{
   }
   const generalYearVsDiseaseCount = async (start:number, end:number) => {
      try{
+      if(start < end)  Notify.create({
+        message: 'Start date must not be greater than end date',
+        color: 'red'
+      })
       const token = localStorage.getItem('auth_token');
       if (!token) throw new Error('No token found');
 
@@ -161,10 +166,10 @@ export const useRecordStore = defineStore('record', ()=>{
             Authorization: `Bearer ${token}`
           },
         })
-      console.log('generalMonthYear', response.data);
+      console.log('generalYear', response.data);
      return response.data;
     }catch(error){
-      console.log(error);
+      console.log(typeof error);
     }
   }
 

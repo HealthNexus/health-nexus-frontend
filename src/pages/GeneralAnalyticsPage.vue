@@ -18,10 +18,9 @@
             :label="data.options.plugins?.title?.text"
           />
         </template>
-        <label>
+        <label v-if="displayChart == 0">
           Year:
           <input
-          v-if="displayChart == 0"
           type="number"
           min="2018"
           max="2024"
@@ -29,9 +28,33 @@
           class="border border-black py-2 px-3 rounded-xl w-1/12"
         />
       </label>
+
+      <div v-if="displayChart==1">
+        <label>
+          Start:
+          <input
+          type="number"
+          min="2018"
+          max="2024"
+          v-model="start"
+          class="border border-black py-2 px-3 rounded-xl w-1/12"
+        />
+        </label>
+        <label>
+          End:
+          <input
+          type="number"
+          min="2018"
+          max="2024"
+          v-model="end"
+          class="border border-black py-2 px-3 rounded-xl w-1/12"
+        />
+        </label>
       </div>
-      <div v-for="data in dataSet" :key="data.data.datasets[0].label">
-        <Bar
+      </div>
+      <div v-for="(data,index) in dataSet" :key="data.data.datasets[0].label">
+        <div v-if="index == displayChart">
+          <Bar
           :data="data.data"
           :options="data.options"
           v-if="chartType == 'bar'"
@@ -49,6 +72,7 @@
           v-if="chartType == 'pie'"
           :style="{ height: '50vh', pointBorderColor: '#000' }"
         />
+        </div>
       </div>
     </div>
     <center>
@@ -96,12 +120,22 @@ const dataSet: Ref<graphData[]> = ref([]);
 const chartType = ref('bar');
 const displayChart = ref(0);
 const year = ref(2024);
+const start = ref(2019);
+const end = ref(2024);
 
 watch(year, monthsVsDiseases);
+watch([start, end], yearsVsDiseases);
 async function monthsVsDiseases() {
   processing.value = true;
   const data = (await recordStore.generalMonthVsDiseaseCount(year.value)) as graphData;
   dataSet.value[0] = data; //I assume that the months dataset should be the first in the dataset array followed by year dataset
+  processing.value = false;
+}
+async function yearsVsDiseases() {
+  processing.value = true;
+  const data = (await recordStore.generalYearVsDiseaseCount(start.value, end.value)) as graphData;
+  console.log('data',data)
+  dataSet.value[1] = data; //I assume that the months dataset should be the first in the dataset array followed by year dataset
   processing.value = false;
 }
 
@@ -109,6 +143,7 @@ onMounted(() => {
   globalStore.showSearch = false;
 
   monthsVsDiseases();
+  yearsVsDiseases();
 });
 </script>
 

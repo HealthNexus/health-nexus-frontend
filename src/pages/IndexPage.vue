@@ -95,9 +95,13 @@ const posts: Ref<Post[]> = ref([]);
       return posts.value.filter((post) => {
         let cat = post.disease.categories.some(cat=>cat.name == category.value.name)
         console.log(cat)
-        return (post.title.toLowerCase().includes(trimmedQuery) ||
+        return category.value.name !='All'? (post.title.toLowerCase().includes(trimmedQuery) ||
              post.excerpt.toLowerCase().includes(trimmedQuery)||
              post.body.toLowerCase().includes(trimmedQuery) )&&cat
+             :
+             (post.title.toLowerCase().includes(trimmedQuery) ||
+             post.excerpt.toLowerCase().includes(trimmedQuery)||
+             post.body.toLowerCase().includes(trimmedQuery) )
       });
     }
   })
