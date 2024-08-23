@@ -92,7 +92,7 @@
         </q-item>
 
         <!-- Add Post -->
-        <q-item clickable v-ripple :to="{ name: 'createPost' }"  v-if="authStore.user.role.slug == 'admin'">
+        <q-item clickable v-ripple :to="{ name: 'createPost' }"  v-if="authStore.user.role.slug == 'admin' &&authStore.loggedIn">
           <q-item-section class="flex flex-row gap-5 justify-start">
             <q-item-label class="capitalize">Add post</q-item-label>
             <!-- add icon -->
@@ -124,6 +124,13 @@
             <q-item-label class="capitalize">General Analytics</q-item-label>
             <!-- add icon -->
             <q-icon name="analytics" class="text-black" />
+          </q-item-section>
+        </q-item>
+
+               <!-- Sign Up -->
+        <q-item v-if="!authStore.loggedIn" clickable v-ripple :to="{ name: 'contact' }">
+          <q-item-section class="flex flex-row gap-5 justify-start">
+            <q-item-label class="capitalize">meet team</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>

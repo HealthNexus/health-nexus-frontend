@@ -17,6 +17,11 @@
                 make your health journey seamless and convenient. Take control
                 of your health with just a few clicks.
               </p>
+
+
+    <q-btn flat :to="{name: 'home'}" class="my-2 bg-blue-500 text-white font-semibold py-2 px-3 rounded-xl hover:bg-blue-900">
+      Home
+    </q-btn>
             </div>
           </div>
           <div class="col-md-6">

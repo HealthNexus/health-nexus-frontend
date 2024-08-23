@@ -41,6 +41,7 @@ const routes: RouteRecordRaw[] = [
     {
       path: '/contact',
       component: () => import('pages/ContactPage.vue'), // Replace with your page component
+      name: 'contact',
     },
 
   {

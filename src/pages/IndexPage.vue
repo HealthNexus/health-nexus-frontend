@@ -44,10 +44,10 @@
             class="q-mr-sm"
           />
         </q-card-actions>
-        <div class="flex justify-end">
-          <q-btn flat>
-            <q-icon name="keyboard_double_arrow_right" @click="viewPost(post.id)" />
-          </q-btn>
+        <div class="flex justify-center">
+          <button flat @click="viewPost(post.id)" class="my-2 bg-blue-500 text-white font-semibold py-2 px-3 rounded-xl">
+            Read more
+          </button>
         </div>
       </q-card>
     </div>
