@@ -32,6 +32,7 @@
         <div class="q-mx-auto" v-if="authStore.loggedIn">
           Welcome {{ authStore.user?.name }}
         </div>
+        <div class="q-mx-auto" v-else></div>
 
 
         <!-- Add search box that is allingned at the center -->
@@ -43,9 +44,9 @@
           v-if="globalStore.showSearch"
         />
 
-        <q-tabs align="left" class="mobile-hide gt-xs">
-          <q-route-tab v-if="!authStore.loggedIn"  :to="{ name: 'signin' }" label="sign in" />
-          <q-route-tab v-if="!authStore.loggedIn" :to="{ name: 'signup' }" label="sign up" />
+        <q-tabs align="left" class="mobile-hide gt-xs py-2">
+          <q-route-tab v-if="!authStore.loggedIn"  :to="{ name: 'signin' }" label="sign in"  class="hover:bg-blue-500 rounded-full border border-blue-600 mr-2"/>
+          <q-route-tab v-if="!authStore.loggedIn" :to="{ name: 'signup' }" label="sign up" class="hover:bg-blue-500 rounded-full border border-blue-600"/>
         </q-tabs>
       </q-toolbar>
     </q-header>
@@ -91,20 +92,11 @@
         </q-item>
 
         <!-- Add Post -->
-        <q-item clickable v-ripple :to="{ name: 'createPost' }">
+        <q-item clickable v-ripple :to="{ name: 'createPost' }"  v-if="authStore.user.role.slug == 'admin'">
           <q-item-section class="flex flex-row gap-5 justify-start">
             <q-item-label class="capitalize">Add post</q-item-label>
             <!-- add icon -->
             <q-icon name="add" class="text-black" />
-          </q-item-section>
-        </q-item>
-
-        <!-- Dashboard -->
-        <q-item  clickable v-ripple :to="{ name: 'dashboard' }" v-if="authStore.loggedIn">
-          <q-item-section class="flex flex-row gap-5 justify-start">
-            <q-item-label class="capitalize">dashboard</q-item-label>
-            <!-- add icon -->
-            <q-icon name="dashboard" class="text-black" />
           </q-item-section>
         </q-item>
 
@@ -123,6 +115,15 @@
             <q-item-label class="capitalize">Add Record</q-item-label>
             <!-- add icon -->
             <q-icon name="add" class="text-black" />
+          </q-item-section>
+        </q-item>
+
+        <!-- ADd Record -->
+        <q-item clickable v-ripple  v-if="authStore.loggedIn" :to="{name: 'general.analytics'}">
+          <q-item-section class="flex flex-row gap-5 justify-start">
+            <q-item-label class="capitalize">General Analytics</q-item-label>
+            <!-- add icon -->
+            <q-icon name="analytics" class="text-black" />
           </q-item-section>
         </q-item>
       </q-list>

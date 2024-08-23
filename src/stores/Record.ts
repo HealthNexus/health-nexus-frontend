@@ -2,6 +2,7 @@ import { ref, Ref } from 'vue';
 // Record Store
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import { Notify } from 'quasar';
 
 export interface RecDisease{
   id: number;
@@ -65,6 +66,26 @@ export const useRecordStore = defineStore('record', ()=>{
     }
   }
 
+  const createRecords = async (userId:number|undefined, diseaseId: number|undefined, symptomIds: number[], drugIds:number[])=>{
+    try{
+      const token = localStorage.getItem('auth_token');
+      if (!token) throw new Error('No token found');
+      const response = await axios.post(`http://localhost:8000/api/records/${userId}/store`, {
+        disease_id: diseaseId,
+        symptom_Ids: symptomIds,
+        drug_Ids: drugIds
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+      })
+      console.log(response.data);
+    }catch(error){
+      console.error(error);
+    }
+
+  }
+
   const monthDiseaseData = async () => {
      try{
       const token = localStorage.getItem('auth_token');
@@ -115,6 +136,43 @@ export const useRecordStore = defineStore('record', ()=>{
     }
   }
 
+  const generalMonthVsDiseaseCount = async (year:number) => {
+     try{
+      const token = localStorage.getItem('auth_token');
+      if (!token) throw new Error('No token found');
+
+      const response = await axios.get(`http://localhost:8000/api/records/analytics/general/${year}/months`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+        })
+      console.log('generalMonthYear', response.data);
+     return response.data;
+    }catch(error){
+      console.log(error);
+    }
+  }
+  const generalYearVsDiseaseCount = async (start:number, end:number) => {
+     try{
+      if(start < end)  Notify.create({
+        message: 'Start date must not be greater than end date',
+        color: 'red'
+      })
+      const token = localStorage.getItem('auth_token');
+      if (!token) throw new Error('No token found');
+
+      const response = await axios.get(`http://localhost:8000/api/records/analytics/general/${start}/${end}/years`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+        })
+      console.log('generalYear', response.data);
+     return response.data;
+    }catch(error){
+      console.log(typeof error);
+    }
+  }
+
   const fetchData = async ()=>{
     const daysData = await dayDiseaseData();
     const monthsData = await monthDiseaseData();
@@ -127,6 +185,9 @@ export const useRecordStore = defineStore('record', ()=>{
     fetchRecords,
     records,
     fetchData,
-    data
+    data,
+    createRecords,
+    generalMonthVsDiseaseCount,
+    generalYearVsDiseaseCount
   }
 })
