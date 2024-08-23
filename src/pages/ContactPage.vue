@@ -91,7 +91,7 @@ export default {
         },
         {
           name: 'JOHN ANAMBOI',
-          position: 'BACKEND LEAD',
+          position: 'PROJECT MANAGER',
           title: '',
           image: 'Images/john.jpg',
           category: 'Backend',
