@@ -19,7 +19,7 @@
               </p>
 
 
-    <q-btn flat :to="{name: 'home'}" class="my-2 bg-blue-500 text-white font-semibold py-2 px-3 rounded-xl hover:bg-blue-900">
+    <q-btn flat :to="{name: 'home'}" class="my-2 bg-blue-900 text-white font-semibold py-2 px-3 rounded-xl hover:bg-indigo-900">
       Home
     </q-btn>
             </div>
@@ -91,39 +91,46 @@ export default {
           name: 'PETER MANDIEYA',
           position: 'UI/UX DEV',
           title: '',
-          image: 'Images/team-1.jpg',
+          image: 'Images/peter.jpg',
           category: 'Frontend',
         },
         {
           name: 'JOHN ANAMBOI',
-          position: 'PROJECT MANAGER',
-          title: '',
+          position: 'FULLSTACK DEV',
+          title: 'BACKEND LEAD',
           image: 'Images/john.jpg',
           category: 'Backend',
         },
         {
-          name: 'BONSE BAAM',
-          position: 'BACKEND DEV',
+          name: 'BONSE NZAKAME',
+          position: 'DATABASE DEV',
           title: '',
           image: 'Images/bonse.jpg',
-          category: 'Backend',
+          category: 'Database',
         },
         {
           name: 'MOMORE EADES',
-          position: 'CHIEF STRATEGY OFFICER',
-          title: '',
-          image: 'Images/prof.jpg',
-          category: 'Backend',
-        },
-        {
-          name: 'JAMAL MALLAH',
           position: 'DATABASE ADMIN',
           title: '',
           image: 'Images/prof.jpg',
           category: 'Database',
         },
         {
-          name: 'SANDRA MENSAH',
+          name: 'JAMAL NOAH',
+          position: 'BACKEND DEV',
+          title: '',
+          image: 'Images/jamal.jpg',
+          category: 'Backend',
+        },
+        {
+          name: 'RASHID NUMBO',
+          position: 'BACKEND DEV',
+          title: '',
+          image: 'Images/rashid.jpg',
+          category: 'Database',
+        },
+        {
+          name: 'SANDRA ODURO',
           position: 'FRONTEND DEV',
           title: '',
           image: 'Images/sandra.jpg',
@@ -133,25 +140,25 @@ export default {
           name: 'ISRAEL TESSU',
           position: 'FRONTEND DEV',
           title: '',
-          image: 'Images/client1.jpg',
+          image: 'Images/israel.jpg',
           category: 'Frontend',
         },
         {
           name: 'DELPHINAH KWARTEMAA',
           position: 'HR',
           title: '',
-          image: 'Images/client2.jpg',
+          image: 'Images/delphinah.jpg',
           category: 'Frontend',
         },
         {
-          name: 'ANTHONY MOLLA',
+          name: 'ANTHONY ADJEI',
           position: 'BACKEND DEV',
           title: '',
-          image: 'Images/prof.jpg',
+          image: 'Images/anthony.jpg',
           category: 'Backend',
         },
         {
-          name: 'DIIVINE QUANSAH',
+          name: 'DIIVINE ADJABENG JNR',
           position: 'BACKEND DEV',
           title: '',
           image: 'Images/divine.jpg',
