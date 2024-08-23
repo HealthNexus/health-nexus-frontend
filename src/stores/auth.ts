@@ -10,7 +10,7 @@ import { Notify } from 'quasar'
 
 
 
-interface User {
+export interface User {
   id: number;
   name: string;
   email: string;
@@ -54,6 +54,7 @@ export const useAuthStore = defineStore('auth', () => {
   const message: Ref<Message> = ref({name: '', success: true});
   const router = useRouter();
   const validationErrors: Ref<Errors|null> = ref(null)
+  const patients: Ref<User[]> = ref(JSON.parse(localStorage.getItem('patients') || '[]'));
 
 
   const API_URL = 'http://localhost:8000/api';
@@ -73,7 +74,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       loggedIn.value = true;
       localStorage.setItem('loggedIn', JSON.stringify(loggedIn.value));
-      router.push({name: 'posts'});
+      router.push({name: 'Landing'});
     } catch(error){
       const axiosErr = error as AxiosError;
       const data = axiosErr.response?.data as Data
@@ -107,8 +108,6 @@ export const useAuthStore = defineStore('auth', () => {
 
       message.value.name = response.data.message;
       message.value.success = true;
-
-      router.push({name: 'dashboard'});
     }catch( error){
       const axiosErr = error as AxiosError;
       const data = axiosErr.response?.data as Data
@@ -142,6 +141,35 @@ export const useAuthStore = defineStore('auth', () => {
 
     loggedIn.value = true;
     localStorage.setItem('loggedIn', JSON.stringify(loggedIn.value));
+   }catch(error){
+    const axiosErr = error as AxiosError;
+    const data = axiosErr.response?.data as Data
+    const errors = data?.errors as Errors
+    validationErrors.value = errors;
+    if(data.message) {
+      message.value.name = data.message;
+      message.value.success = false;
+    }
+   } finally{
+    Notify.create({
+      message: message.value.name,
+      color: message.value.success? 'green':'red'
+    })
+   }
+  };
+
+  const fetchPatients = async () => {
+   try{
+    const token = localStorage.getItem('auth_token');
+    if (!token) throw new Error('No token found');
+
+    const response = await axios.get(`${API_URL}/users`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    patients.value = response.data.patients;
+    localStorage.setItem('patients', JSON.stringify(patients.value));
    }catch(error){
     const axiosErr = error as AxiosError;
     const data = axiosErr.response?.data as Data
@@ -234,6 +262,8 @@ export const useAuthStore = defineStore('auth', () => {
     validationErrors,
     message,
     fetchHospitals,
+    fetchPatients,
+    patients
 
   };
 });

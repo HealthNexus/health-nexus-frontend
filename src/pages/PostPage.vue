@@ -25,7 +25,7 @@
             </ul>
           </div>
         </div>
-        <div class="mt-10">
+        <div class="mt-10" v-if="authStore.user?.role.slug == 'admin' || authStore.user?.role.slug == 'doctor'">
           <h1 class="text-xl font-bold mb-10">Related Drugs</h1>
           <div>
             <ul>
@@ -40,7 +40,7 @@
 
 
 
-    <div class="mt-20">
+    <div class="mt-20" v-if="authStore.loggedIn">
       <!-- Comment form -->
       <comment-form :postId="postStore.post?.id as number" />
 
@@ -78,10 +78,12 @@ import { useGlobalStore } from 'src/stores/global';
 
 import { useRouter } from 'vue-router';
 import CommentSection from 'src/components/CommentSection.vue';
+import { useAuthStore } from 'src/stores/auth';
 
 const router = useRouter();
 const postStore = usePostStore();
 const globalStore = useGlobalStore();
+const authStore = useAuthStore();
 
 const showComments = ref(false);
 function toggleCommentShow() {
