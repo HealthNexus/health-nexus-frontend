@@ -109,7 +109,7 @@ export default {
           category: 'Database',
         },
         {
-          name: 'MOMOREOLUWA MONSURU-OKE',
+          name: 'MOMORE MONSURU-OKE',
           position: 'DATABASE DESIGN',
           title: '',
           image: 'Images/momore.jpg',
