@@ -2,12 +2,7 @@
   <q-page class="flex justify-between">
     <div class="mr-auto ml-auto mt-4">
       <!-- add a toolbar for searching and selecting post via a drop down menu-->
-      <q-toolbar class="grid grid-flow-col gap-5">
-        <button
-        class="underline hover:text-blue-500"
-        @click="fetchPosts"
-        >All</button>
-          <!-- Select Categories -->
+      <q-toolbar class="grid grid-flow-col gap-5">       <!-- Select Categories -->
           <q-select
             v-model="category"
             :loading="processing"
@@ -70,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, onMounted, Ref, ref, watch} from 'vue';
+import { computed, inject, onMounted, Ref, ref} from 'vue';
 // import axiosInstance from 'src/axios';
 import { usePostStore } from 'src/stores/Posts';
 
@@ -91,41 +86,36 @@ const processing = ref(false);
 const posts: Ref<Post[]> = ref([]);
 
 
-// watch changes in category
-watch([() => category.value.name], async ([selectedCategory]) => {
-  console.log('watch triggered:', selectedCategory);
-  filterPostsByCategory(selectedCategory);
-});
-
   //search through posts on the client side, utilise regex for complex searches
   const searchPosts = computed(()=>{
     const trimmedQuery = search.value.trim().toLowerCase();
-    if(trimmedQuery == ''){
+    if(trimmedQuery == '' && category.value.name == 'All'){
       return posts.value;
     }else {
       return posts.value.filter((post) => {
-        return post.title.toLowerCase().includes(trimmedQuery) ||
+        let cat = post.disease.categories.some(cat=>cat.name == category.value.name)
+        console.log(cat)
+        return category.value.name !='All'? (post.title.toLowerCase().includes(trimmedQuery) ||
              post.excerpt.toLowerCase().includes(trimmedQuery)||
-             post.body.toLowerCase().includes(trimmedQuery)
+             post.body.toLowerCase().includes(trimmedQuery) )&&cat
+             :
+             (post.title.toLowerCase().includes(trimmedQuery) ||
+             post.excerpt.toLowerCase().includes(trimmedQuery)||
+             post.body.toLowerCase().includes(trimmedQuery) )
       });
     }
   })
-function filterPostsByCategory(selectedCategory: string) {
-  // logic to filter posts without using postStore
-  return posts.value.filter((post) => {
-    return post.disease.categories.filter((category) => category.name === selectedCategory)
-    })
-  }
+// function filterPostsByCategory(selectedCategory: string) {
+//   // logic to filter posts without using postStore
+//   return posts.value.filter((post) => {
+//     return post.disease.categories.filter((category) => category.name === selectedCategory)
+//     })
+//   }
 
 
 
 async function viewPost(id: number) {
   router.push({ name: 'post', params: { id } });
-}
-
-async function fetchPosts() {
-  postStore.fetchPosts();
-  search.value = '';
 }
 
 async function fetchCategories(){
