@@ -109,10 +109,10 @@ export default {
           category: 'Database',
         },
         {
-          name: 'MOMORE EADES',
-          position: 'DATABASE ADMIN',
+          name: 'MOMOREOLUWA MONSURU-OKE',
+          position: 'DATABASE DESIGN',
           title: '',
-          image: 'Images/prof.jpg',
+          image: 'Images/momore.jpg',
           category: 'Database',
         },
         {
