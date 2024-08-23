@@ -7,7 +7,7 @@
           Your Ultimate Solution for all health and wellness activity!
         </p>
         <div class="buttons">
-          <q-btn color="primary" label="Sign Up" class="rounded-button" :to="{name: 'signup'}" />
+          <q-btn color="primary" label="Sign Up" class="rounded-button" :to="{name: 'signup'}" v-if="!authStore.loggedIn" />
           <q-btn
             color="primary"
             outline
