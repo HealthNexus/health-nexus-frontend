@@ -7,7 +7,7 @@
           Your Ultimate Solution for all health and wellness activity!
         </p>
         <div class="buttons">
-          <q-btn color="primary" label="Sign Up" class="rounded-button" :to="{name: 'signup'}" v-if="!authStore.loggedIn"/>
+          <q-btn color="primary" label="Sign Up" class="rounded-button" :to="{name: 'signup'}" v-if="!authStore.loggedIn" />
           <q-btn
             color="primary"
             outline
@@ -16,6 +16,7 @@
             :to="{name:'signin'}"
             v-if="!authStore.loggedIn"
           />
+          <q-btn color="primary" outline label="About" class="rounded-button" :to="{name: 'contact'}"/>
           <q-btn color="primary" outline label="Blogs" class="rounded-button" :to="{name:'posts'}"/>
         </div>
       </div>
@@ -150,8 +151,8 @@ onMounted(()=>{
 }
 
 .footer-text {
-  font-size: 1rem;
-  color: navy;
+  font-size: small;
+  color: white;
 }
 
 .rounded-card {
@@ -159,8 +160,8 @@ onMounted(()=>{
 }
 
 .footer {
-  padding: 20px 0;
-  background-color: #f0f0f0;
+  padding: 15px 0;
+  background-color: navy;
 }
 
 .footer-content {
