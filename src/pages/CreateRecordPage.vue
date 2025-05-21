@@ -16,7 +16,7 @@
             label="Select a patient"
             :loading="loading"
             @input-value="userSearch = $event"
-            :rules="[(val) => !!val || 'Please select a patient']"
+            :rules="[(val : any) => !!val || 'Please select a patient']"
           >
             <template v-slot:no-option> No users found </template>
           </q-select>
@@ -33,7 +33,7 @@
             label="Select a disease"
             :loading="loading"
             @input-value="diseaseSearch = $event"
-            :rules="[(val) => !!val || 'Please select a disease']"
+            :rules="[(val:any) => !!val || 'Please select a disease']"
           >
             <template v-slot:no-option> No disease found </template>
           </q-select>
@@ -51,7 +51,7 @@
             label="Select a symptoms"
             :loading="loading"
             @input-value="symptomSearch = $event"
-            :rules="[(val) => !!val || 'Please select a symptom']"
+            :rules="[(val:any) => !!val || 'Please select a symptom']"
           >
             <template v-slot:no-option> No symptom found </template>
           </q-select>
@@ -69,7 +69,7 @@
             label="Select a drugs"
             :loading="loading"
             @input-value="drugSearch = $event"
-            :rules="[(val) => !!val || 'Please select a drug']"
+            :rules="[(val:any) => !!val || 'Please select a drug']"
           >
             <template v-slot:no-option> No drug found </template>
           </q-select>
@@ -161,7 +161,7 @@ const createRecord = async () => {
       type: 'positive',
       message: 'Record created successfully',
     });
-    router.push('/records');
+    router.push({name:'posts'});
   } catch (error) {
     console.error(error);
   }
