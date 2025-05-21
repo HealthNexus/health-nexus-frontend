@@ -8,12 +8,12 @@
         <div class="row">
           <div class="col-md-6">
             <div class="text">
-              <h1 class="title">Health Nexus</h1>
+              <h1 class="title">{{APP_NAME}}</h1>
               <p>
-                Welcome to Health Nexus - your all-in-one health management
+                Welcome to {APP_NAME} - your all-in-one health management
                 solution. Whether you need to refill your prescriptions through
                 our e-pharmacy, securely manage your health records, or get
-                instant support from our AI chatbot, Health Nexus is here to
+                instant support from our AI chatbot, {APP_NAME} is here to
                 make your health journey seamless and convenient. Take control
                 of your health with just a few clicks.
               </p>
@@ -74,9 +74,12 @@
 </template>
 
 <script>
+import { APP_NAME } from 'src/constants';
+
 export default {
   data() {
     return {
+      APP_NAME,
       selectedTab: 'Frontend',
       tabs: ['Frontend', 'Backend', 'Database'],
       members: [

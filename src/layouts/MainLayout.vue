@@ -24,7 +24,7 @@
                 />
               </svg>
             </q-avatar>
-            HealthNexus
+            {{ APP_NAME }}
             <!-- welcom message centered -->
           </q-toolbar-title>
         </div>
@@ -101,38 +101,32 @@
         </q-item>
 
         <!-- Health Records -->
-        <q-item clickable v-ripple  v-if="authStore.loggedIn" :to="{name: 'records'}">
+        <!-- <q-item clickable v-ripple  v-if="authStore.loggedIn" :to="{name: 'records'}">
           <q-item-section class="flex flex-row gap-5 justify-start">
             <q-item-label class="capitalize">health records</q-item-label>
-            <!-- add icon -->
+
             <q-icon name="description" class="text-black" />
           </q-item-section>
-        </q-item>
+        </q-item> -->
 
         <!-- ADd Record -->
-        <q-item clickable v-ripple  v-if="authStore.loggedIn && authStore.user.role.slug == 'admin'" :to="{name: 'record.create'}">
+        <!-- <q-item clickable v-ripple  v-if="authStore.loggedIn && authStore.user.role.slug == 'admin'" :to="{name: 'record.create'}">
           <q-item-section class="flex flex-row gap-5 justify-start">
             <q-item-label class="capitalize">Add Record</q-item-label>
-            <!-- add icon -->
+
             <q-icon name="add" class="text-black" />
           </q-item-section>
-        </q-item>
+        </q-item> -->
 
-        <!-- ADd Record -->
-        <q-item clickable v-ripple  v-if="authStore.loggedIn" :to="{name: 'general.analytics'}">
+        <!-- General Analytics -->
+        <!-- <q-item clickable v-ripple  v-if="authStore.loggedIn" :to="{name: 'general.analytics'}">
           <q-item-section class="flex flex-row gap-5 justify-start">
             <q-item-label class="capitalize">General Analytics</q-item-label>
-            <!-- add icon -->
+
             <q-icon name="analytics" class="text-black" />
           </q-item-section>
-        </q-item>
+        </q-item> -->
 
-               <!-- Sign Up -->
-        <q-item v-if="!authStore.loggedIn" clickable v-ripple :to="{ name: 'contact' }">
-          <q-item-section class="flex flex-row gap-5 justify-start">
-            <q-item-label class="capitalize">meet team</q-item-label>
-          </q-item-section>
-        </q-item>
       </q-list>
     </q-drawer>
 
@@ -147,6 +141,7 @@ import { ref, provide, computed } from 'vue';
 import { useAuthStore } from '../stores/auth';
 import { useGlobalStore } from '../stores/global';
 import { useRouter, useRoute } from 'vue-router';
+import { APP_NAME } from '../constants';
 
 export default {
   setup() {
@@ -156,6 +151,7 @@ export default {
     const router = useRouter();
     const search = ref('');
     const route = useRoute();
+
 
 
 
@@ -188,6 +184,7 @@ export default {
       authStore,
       showHeader,
       globalStore,
+      APP_NAME,
 
     }
 }

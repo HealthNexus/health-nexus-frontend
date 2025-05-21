@@ -18,27 +18,17 @@ const routes: RouteRecordRaw[] = [
       { path: 'signup', name:'signup', component: () => import('pages/signUpPage.vue') },
       { path: 'signin', name:'signin', component: () => import('pages/signInPage.vue') },
       { path: 'test', name:'test', component: () => import('pages/TestPage.vue') },
-      { path: 'records', name:'records', component: () => import('pages/RecordsPage.vue') },
+      // { path: 'records', name:'records', component: () => import('pages/RecordsPage.vue') },
       { path: 'landing', name:'Landing', component: () => import('src/pages/LandingPage.vue') },
-      { path: 'blogs', name:'Blog', component: () => import('src/pages/BlogTest.vue') },
-      { path: 'record/create', name:'record.create', component: () => import('src/pages/CreateRecordPage.vue') },
-      { path: 'analytics/general', name:'general.analytics', component: () => import('src/pages/GeneralAnalyticsPage.vue') },
+      // { path: 'blogs', name:'Blog', component: () => import('src/pages/BlogTest.vue') },
+      // { path: 'record/create', name:'record.create', component: () => import('src/pages/CreateRecordPage.vue') },
+      // { path: 'analytics/general', name:'general.analytics', component: () => import('src/pages/GeneralAnalyticsPage.vue') },
       // Posts routes
       { path: 'posts/', component: () => import('pages/IndexPage.vue'), name:'posts' },
       {path: 'posts/:id', name:'post', component: ()=> import('pages/PostPage.vue') },
       {path: 'posts/create', name:'createPost', component: ()=> import('pages/CreatePostForm.vue') }
     ],
   },
-
-    // New pages not using MainLayout
-    {
-      path: '/about',
-      component: () => import('pages/AboutPage.vue'), // Replace with your page component
-    },
-    {
-      path: '/blogs',
-      component: () => import('pages/BlogTest.vue'), // Replace with your page component
-    },
     {
       path: '/contact',
       component: () => import('pages/ContactPage.vue'), // Replace with your page component
@@ -55,10 +45,7 @@ const routes: RouteRecordRaw[] = [
       } else {
         next({name: 'signin'})
       }
-    },
-    children: [
-      { path: 'dashboard', name:'dashboard', component: () => import('pages/userDashboard.vue')},
-    ]
+    }
   },
 
   // Always leave this as last one,

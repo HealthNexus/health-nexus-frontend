@@ -2,7 +2,7 @@
   <q-page class="landing-page">
     <div class="hero">
       <div class="hero-text">
-        <h1 class="main-title">Welcome to Health Nexus</h1>
+        <h1 class="main-title">Welcome to {{APP_NAME}}</h1>
         <p class="subtitle">
           Your Ultimate Solution for all health and wellness activity!
         </p>
@@ -16,7 +16,6 @@
             :to="{name:'signin'}"
             v-if="!authStore.loggedIn"
           />
-          <q-btn color="primary" outline label="About" class="rounded-button" :to="{name: 'contact'}"/>
           <q-btn color="primary" outline label="Blogs" class="rounded-button" :to="{name:'posts'}"/>
         </div>
       </div>
@@ -40,17 +39,6 @@
 
       <q-card class="feature col-12 col-md-3 rounded-card">
         <q-card-section>
-          <q-icon name="vaccines" size="40px" />
-          <h2 class="feature-title">E-pharmacy</h2>
-          <p class="feature-text">
-            Order medications and health supplies online and have them delivered
-            to your doorstep.
-          </p>
-        </q-card-section>
-      </q-card>
-
-      <q-card class="feature col-12 col-md-3 rounded-card">
-        <q-card-section>
           <q-icon name="chat" size="40px" />
           <h2 class="feature-title">ChatBox</h2>
           <p class="feature-text">
@@ -63,7 +51,7 @@
 
     <q-footer class="footer">
       <div class="footer-content">
-        <p class="footer-text">Copyright © 2024 Health Nexus Organization</p>
+        <p class="footer-text">Copyright © 2024 {{APP_NAME}} Organization</p>
       </div>
     </q-footer>
   </q-page>
@@ -73,6 +61,7 @@
 import { useAuthStore } from 'src/stores/auth';
 import { useGlobalStore } from 'src/stores/global';
 import { onMounted } from 'vue';
+import { APP_NAME } from 'src/constants';
 
 const authStore = useAuthStore();
 const globalStore = useGlobalStore();
