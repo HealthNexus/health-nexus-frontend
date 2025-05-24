@@ -92,7 +92,7 @@
         </q-item>
 
         <!-- Add Post -->
-        <q-item clickable v-ripple :to="{ name: 'createPost' }"  v-if="authStore.user.role.slug == 'admin' &&authStore.loggedIn">
+        <q-item clickable v-ripple :to="{ name: 'createPost' }"  v-if="authStore.loggedIn && authStore.user.role.slug == 'admin'">
           <q-item-section class="flex flex-row gap-5 justify-start">
             <q-item-label class="capitalize">Add post</q-item-label>
             <!-- add icon -->
