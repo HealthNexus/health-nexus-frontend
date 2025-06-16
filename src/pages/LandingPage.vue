@@ -51,7 +51,7 @@
 
     <q-footer class="footer">
       <div class="footer-content">
-        <p class="footer-text">Copyright © 2024 {{APP_NAME}} Organization</p>
+        <p class="footer-text">Copyright © 2025 {{APP_NAME}} Organization</p>
       </div>
     </q-footer>
   </q-page>
