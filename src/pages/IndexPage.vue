@@ -28,7 +28,7 @@
         :key="post.id"
       >
         <q-img :src="post?.thumbnail ?? `https://picsum.photos/id/${post.id + 10}/800/400`" :ratio="16 / 9">
-          <div class="absolute-bottom text-h6">
+          <div class="absolute-bottom text-h6 text-wrap overflow-hidden">
             {{ post.title }}
           </div>
         </q-img>
