@@ -101,31 +101,31 @@
         </q-item>
 
         <!-- Health Records -->
-        <!-- <q-item clickable v-ripple  v-if="authStore.loggedIn" :to="{name: 'records'}">
+        <q-item clickable v-ripple  v-if="authStore.loggedIn" :to="{name: 'records'}">
           <q-item-section class="flex flex-row gap-5 justify-start">
             <q-item-label class="capitalize">health records</q-item-label>
 
             <q-icon name="description" class="text-black" />
           </q-item-section>
-        </q-item> -->
+        </q-item>
 
-        <!-- ADd Record -->
-        <!-- <q-item clickable v-ripple  v-if="authStore.loggedIn && authStore.user.role.slug == 'admin'" :to="{name: 'record.create'}">
+        <!-- Add Record -->
+        <q-item clickable v-ripple  v-if="authStore.loggedIn && authStore.user.role.slug == 'admin'" :to="{name: 'record.create'}">
           <q-item-section class="flex flex-row gap-5 justify-start">
             <q-item-label class="capitalize">Add Record</q-item-label>
 
             <q-icon name="add" class="text-black" />
           </q-item-section>
-        </q-item> -->
+        </q-item>
 
         <!-- General Analytics -->
-        <!-- <q-item clickable v-ripple  v-if="authStore.loggedIn" :to="{name: 'general.analytics'}">
+        <q-item clickable v-ripple  v-if="authStore.loggedIn" :to="{name: 'general.analytics'}">
           <q-item-section class="flex flex-row gap-5 justify-start">
             <q-item-label class="capitalize">General Analytics</q-item-label>
 
             <q-icon name="analytics" class="text-black" />
           </q-item-section>
-        </q-item> -->
+        </q-item>
 
       </q-list>
     </q-drawer>

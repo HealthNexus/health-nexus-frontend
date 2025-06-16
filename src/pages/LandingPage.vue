@@ -100,7 +100,7 @@ onMounted(()=>{
 
 .main-title {
   font-size: 3rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.2rem;
 }
 
 .subtitle {
