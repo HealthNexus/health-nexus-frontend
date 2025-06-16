@@ -28,11 +28,11 @@
         :key="post.id"
       >
         <q-img :src="post?.thumbnail ?? `https://picsum.photos/id/${post.id + 10}/800/400`" :ratio="16 / 9">
-          <div class="absolute-bottom text-h6 text-wrap overflow-hidden">
+          <div class="absolute-bottom text-h6 text-wrap break-words">
             {{ post.title }}
           </div>
         </q-img>
-        <q-card-section>
+        <q-card-section class="text-h6 text-wrap break-words">
           {{ post.excerpt }}
         </q-card-section>
         <!-- show categories -->
