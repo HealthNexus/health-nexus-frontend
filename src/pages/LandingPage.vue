@@ -37,6 +37,17 @@
         </q-card-section>
       </q-card>
 
+           <q-card class="feature col-12 col-md-3 rounded-card">
+        <q-card-section>
+          <q-icon name="vaccines" size="40px" />
+          <h2 class="feature-title">E-pharmacy</h2>
+          <p class="feature-text">
+            Order medications and health supplies online and have them delivered
+            to your doorstep.
+          </p>
+        </q-card-section>
+      </q-card>
+
       <q-card class="feature col-12 col-md-3 rounded-card">
         <q-card-section>
           <q-icon name="chat" size="40px" />
