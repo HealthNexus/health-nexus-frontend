@@ -40,7 +40,7 @@
       <q-card class="feature col-12 col-md-3 rounded-card">
         <q-card-section>
           <q-icon name="chat" size="40px" />
-          <h2 class="feature-title">ChatBox</h2>
+          <h2 class="feature-title">ChatBot</h2>
           <p class="feature-text">
             Get instant support and answers to your health questions 24/7 with
             our integrated chatbot.
