@@ -91,6 +91,15 @@
           </q-item-section>
         </q-item>
 
+        <!-- E-Pharmacy -->
+        <q-item clickable v-ripple :to="{ name: 'pharmacy' }">
+          <q-item-section class="flex flex-row gap-5 justify-start">
+            <q-item-label class="capitalize">e-pharmacy</q-item-label>
+            <!-- add icon -->
+            <q-icon name="local_pharmacy" class="text-black" />
+          </q-item-section>
+        </q-item>
+
         <!-- Add Post -->
         <q-item clickable v-ripple :to="{ name: 'createPost' }"  v-if="authStore.loggedIn && authStore.user.role.slug == 'admin'">
           <q-item-section class="flex flex-row gap-5 justify-start">
@@ -137,9 +146,10 @@
 </template>
 
 <script>
-import { ref, provide, computed } from 'vue';
+import { ref, provide, computed, onMounted, watch } from 'vue';
 import { useAuthStore } from '../stores/auth';
 import { useGlobalStore } from '../stores/global';
+import { usePharmacyStore } from '../stores/pharmacy';
 import { useRouter, useRoute } from 'vue-router';
 import { APP_NAME } from '../constants';
 
@@ -148,30 +158,45 @@ export default {
     const leftDrawerOpen = ref(false);
     const authStore = useAuthStore();
     const globalStore = useGlobalStore();
+    const pharmacyStore = usePharmacyStore();
     const router = useRouter();
     const search = ref('');
     const route = useRoute();
 
-
-
-
-    provide('search', search)
-
-
+    provide('search', search);
 
     const showHeader = computed(() => {
       return route.name !== 'signin' && route.name !== 'signup';
     });
-    const logout = async ()=>{
-      try{
+
+    // Watch for authentication changes
+    watch(() => authStore.loggedIn, (isLoggedIn) => {
+      if (isLoggedIn) {
+        // Load cart from localStorage (synchronous)
+        pharmacyStore.loadCart();
+      } else {
+        // Clear cart when user logs out
+        pharmacyStore.clearCart();
+      }
+    });
+
+    // Load cart on mount if user is already authenticated
+    onMounted(() => {
+      if (authStore.loggedIn) {
+        pharmacyStore.loadCart();
+      }
+    });
+
+    const logout = async () => {
+      try {
         await authStore.logout();
         router.push('/signin');
-      }catch(error){
+      } catch (error) {
         console.error('Logout error:', error);
         authStore.message.name = 'An error occured while logging out';
         authStore.message.success = false;
       }
-    }
+    };
 
     return {
       leftDrawerOpen,
@@ -185,8 +210,7 @@ export default {
       showHeader,
       globalStore,
       APP_NAME,
-
-    }
-}
+    };
+  }
 };
 </script>

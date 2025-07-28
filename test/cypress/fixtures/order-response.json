@@ -1,0 +1,22 @@
+{
+  "orderId": "ORDER123456",
+  "status": "confirmed", 
+  "total": 37.48,
+  "estimatedDelivery": "2025-07-27T10:00:00Z",
+  "trackingNumber": "TRK123456789",
+  "items": [
+    {
+      "drugId": "1",
+      "quantity": 2,
+      "drugName": "Aspirin",
+      "price": 10.99
+    },
+    {
+      "drugId": "2", 
+      "quantity": 1,
+      "drugName": "Ibuprofen",
+      "price": 15.50
+    }
+  ],
+  "createdAt": "2025-07-24T14:30:00Z"
+}

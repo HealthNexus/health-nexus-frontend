@@ -2,7 +2,7 @@ import { Ref } from 'vue';
 // src/stores/auth.ts
 import { defineStore } from 'pinia';
 import { ref} from 'vue';
-import axios from 'axios';
+import axios from '../axios.js';
 
 
 export interface Disease{
@@ -24,7 +24,7 @@ export interface Drug{
 }
   export const useDiseaseStore = defineStore('disease', () => {
 
-  const API_URL = 'http://localhost:8000/api';
+  const API_URL = '/api';
   const diseases: Ref<Disease[]> = ref([]);
   const symptoms: Ref<Symptom[]> = ref([]);
   const drugs: Ref<Drug[]> = ref([]);
@@ -32,7 +32,7 @@ export interface Drug{
   const fetchDiseases = async () => {
     try{
       const response = await axios.get(`${API_URL}/diseases`);
-    diseases.value = response.data.disease;
+      diseases.value = response.data.data;
       return diseases.value;
     }catch(error){
       console.log(error)

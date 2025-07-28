@@ -1,0 +1,10 @@
+{
+  "id": "1",
+  "name": "Aspirin",
+  "price": 10.99,
+  "description": "Pain reliever and fever reducer. Effective for headaches, muscle pain, and inflammation. Take with food to reduce stomach irritation.",
+  "stock": 50,
+  "category": "Pain Relief",
+  "manufacturer": "Generic",
+  "image": "/images/aspirin.jpg"
+}

@@ -1,7 +1,8 @@
 // src/stores/auth.ts
 import { defineStore } from 'pinia';
 import { ref, Ref } from 'vue';
-import axios, { AxiosError } from 'axios';
+import axios from '../axios.js';
+import { AxiosError } from 'axios';
 import { useRouter } from 'vue-router';
 
 import { Notify } from 'quasar'
@@ -57,7 +58,7 @@ export const useAuthStore = defineStore('auth', () => {
   const patients: Ref<User[]> = ref(JSON.parse(localStorage.getItem('patients') || '[]'));
 
 
-  const API_URL = 'http://localhost:8000/api';
+  const API_URL = '/api';
 
   const login = async (email: string, password: string) => {
     loading.value = true;
@@ -80,8 +81,13 @@ export const useAuthStore = defineStore('auth', () => {
       const data = axiosErr.response?.data as Data
       const errors = data?.errors as Errors
       validationErrors.value = errors;
-      if(data.message) {
+      
+      if(data?.message) {
         message.value.name = data.message;
+        message.value.success = false;
+      } else {
+        // Handle network errors or other issues
+        message.value.name = axiosErr.message || 'Network error occurred';
         message.value.success = false;
       }
 
@@ -113,8 +119,13 @@ export const useAuthStore = defineStore('auth', () => {
       const data = axiosErr.response?.data as Data
       const errors = data?.errors as Errors
       validationErrors.value = errors;
-      if(data.message) {
+      
+      if(data?.message) {
         message.value.name = data.message;
+        message.value.success = false;
+      } else {
+        // Handle network errors or other issues
+        message.value.name = axiosErr.message || 'Network error occurred';
         message.value.success = false;
       }
     }
@@ -146,8 +157,13 @@ export const useAuthStore = defineStore('auth', () => {
     const data = axiosErr.response?.data as Data
     const errors = data?.errors as Errors
     validationErrors.value = errors;
-    if(data.message) {
+    
+    if(data?.message) {
       message.value.name = data.message;
+      message.value.success = false;
+    } else {
+      // Handle network errors or other issues
+      message.value.name = axiosErr.message || 'Network error occurred';
       message.value.success = false;
     }
    } finally{
@@ -175,8 +191,13 @@ export const useAuthStore = defineStore('auth', () => {
     const data = axiosErr.response?.data as Data
     const errors = data?.errors as Errors
     validationErrors.value = errors;
-    if(data.message) {
+    
+    if(data?.message) {
       message.value.name = data.message;
+      message.value.success = false;
+    } else {
+      // Handle network errors or other issues
+      message.value.name = axiosErr.message || 'Network error occurred';
       message.value.success = false;
     }
    } finally{
@@ -214,8 +235,13 @@ export const useAuthStore = defineStore('auth', () => {
         const data = axiosErr.response?.data as Data
         const errors = data?.errors as Errors
         validationErrors.value = errors;
-        if(data.message) {
+        
+        if(data?.message) {
           message.value.name = data.message;
+          message.value.success = false;
+        } else {
+          // Handle network errors or other issues
+          message.value.name = axiosErr.message || 'Network error occurred';
           message.value.success = false;
         }
       } finally{
@@ -237,8 +263,13 @@ export const useAuthStore = defineStore('auth', () => {
       const data = axiosErr.response?.data as Data
       const errors = data?.errors as Errors
       validationErrors.value = errors;
-      if(data.message) {
+      
+      if(data?.message) {
         message.value.name = data.message;
+        message.value.success = false;
+      } else {
+        // Handle network errors or other issues
+        message.value.name = axiosErr.message || 'Network error occurred';
         message.value.success = false;
       }
      }

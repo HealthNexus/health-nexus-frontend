@@ -1,0 +1,45 @@
+{
+  "orderId": "ORDER123456",
+  "status": "in_transit",
+  "estimatedDelivery": "2025-07-27T10:00:00Z",
+  "trackingNumber": "TRK123456789",
+  "currentLocation": "Distribution Center",
+  "total": 37.48,
+  "items": [
+    {
+      "drugId": "1",
+      "quantity": 2,
+      "drugName": "Aspirin", 
+      "price": 10.99
+    },
+    {
+      "drugId": "2",
+      "quantity": 1,
+      "drugName": "Ibuprofen",
+      "price": 15.50
+    }
+  ],
+  "createdAt": "2025-07-24T14:30:00Z",
+  "statusHistory": [
+    {
+      "status": "confirmed",
+      "timestamp": "2025-07-24T14:30:00Z",
+      "location": "Pharmacy"
+    },
+    {
+      "status": "processing", 
+      "timestamp": "2025-07-24T15:00:00Z",
+      "location": "Pharmacy"
+    },
+    {
+      "status": "shipped",
+      "timestamp": "2025-07-25T09:00:00Z", 
+      "location": "Shipping Facility"
+    },
+    {
+      "status": "in_transit",
+      "timestamp": "2025-07-25T18:00:00Z",
+      "location": "Distribution Center"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 // src/stores/auth.ts
 import { defineStore } from 'pinia';
 import { ref, Ref } from 'vue';
-import axios from 'axios';
+import axios from '../axios.js';
 import { useAuthStore } from './auth';
 import { Notify } from 'quasar'
 export interface Post {

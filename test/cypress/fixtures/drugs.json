@@ -1,0 +1,82 @@
+[
+  {
+    "id": "1",
+    "name": "Aspirin",
+    "price": 10.99,
+    "description": "Pain reliever and fever reducer. Effective for headaches, muscle pain, and inflammation.",
+    "stock": 50,
+    "category": "Pain Relief",
+    "manufacturer": "Generic",
+    "image": "/images/aspirin.jpg"
+  },
+  {
+    "id": "2",
+    "name": "Ibuprofen",
+    "price": 15.50,
+    "description": "Anti-inflammatory medication for pain and swelling. Good for joint pain and arthritis.",
+    "stock": 30,
+    "category": "Pain Relief",
+    "manufacturer": "Advil",
+    "image": "/images/ibuprofen.jpg"
+  },
+  {
+    "id": "3",
+    "name": "Amoxicillin",
+    "price": 25.00,
+    "description": "Antibiotic for bacterial infections. Commonly prescribed for respiratory infections.",
+    "stock": 20,
+    "category": "Antibiotics",
+    "manufacturer": "Generic",
+    "image": "/images/amoxicillin.jpg"
+  },
+  {
+    "id": "4",
+    "name": "Metformin",
+    "price": 18.75,
+    "description": "Diabetes medication to control blood sugar levels. Extended release formula.",
+    "stock": 40,
+    "category": "Diabetes",
+    "manufacturer": "Generic",
+    "image": "/images/metformin.jpg"
+  },
+  {
+    "id": "5",
+    "name": "Lisinopril",
+    "price": 12.25,
+    "description": "ACE inhibitor for high blood pressure and heart failure management.",
+    "stock": 35,
+    "category": "Cardiovascular",
+    "manufacturer": "Generic",
+    "image": "/images/lisinopril.jpg"
+  },
+  {
+    "id": "6",
+    "name": "Omeprazole",
+    "price": 22.00,
+    "description": "Proton pump inhibitor for acid reflux and heartburn relief.",
+    "stock": 25,
+    "category": "Gastrointestinal",
+    "manufacturer": "Prilosec",
+    "image": "/images/omeprazole.jpg"
+  },
+  {
+    "id": "7",
+    "name": "Acetaminophen",
+    "price": 8.99,
+    "description": "Pain reliever and fever reducer. Gentle on stomach, suitable for regular use.",
+    "stock": 60,
+    "category": "Pain Relief",
+    "manufacturer": "Tylenol",
+    "image": "/images/acetaminophen.jpg"
+  },
+  {
+    "id": "8",
+    "name": "Lorazepam",
+    "price": 35.50,
+    "description": "Anti-anxiety medication for short-term relief of anxiety symptoms.",
+    "stock": 15,
+    "category": "Mental Health",
+    "manufacturer": "Generic",
+    "image": "/images/lorazepam.jpg"
+  }
+]

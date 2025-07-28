@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "name": "Aspirin",
+    "price": 10.99,
+    "description": "Pain reliever and fever reducer",
+    "stock": 50,
+    "category": "Pain Relief",
+    "manufacturer": "Generic"
+  },
+  {
+    "id": "7", 
+    "name": "Acetaminophen",
+    "price": 8.99,
+    "description": "Pain reliever and fever reducer. Gentle on stomach",
+    "stock": 60,
+    "category": "Pain Relief", 
+    "manufacturer": "Tylenol"
+  }
+]

@@ -1,7 +1,7 @@
 import { ref, Ref } from 'vue';
 // Record Store
 import { defineStore } from 'pinia';
-import axios from 'axios';
+import axios from '../axios.js';
 import { Notify } from 'quasar';
 
 export interface RecDisease{
@@ -47,13 +47,14 @@ interface Dataset {
 export const useRecordStore = defineStore('record', ()=>{
   const records: Ref<Records> = ref({patient_name: '', diseases: []});
   const data: Ref<graphData[]> = ref([]);
+  const API_URL = '/api';
 
   const fetchRecords = async () => {
      try{
       const token = localStorage.getItem('auth_token');
       if (!token) throw new Error('No token found');
 
-      const response = await axios.get('http://localhost:8000/api/records', {
+      const response = await axios.get(`${API_URL}/records`, {
           headers: {
             Authorization: `Bearer ${token}`
           },
@@ -70,7 +71,7 @@ export const useRecordStore = defineStore('record', ()=>{
     try{
       const token = localStorage.getItem('auth_token');
       if (!token) throw new Error('No token found');
-      const response = await axios.post(`http://localhost:8000/api/records/${userId}/store`, {
+      const response = await axios.post(`${API_URL}/records/${userId}/store`, {
         disease_id: diseaseId,
         symptom_Ids: symptomIds,
         drug_Ids: drugIds
@@ -91,7 +92,7 @@ export const useRecordStore = defineStore('record', ()=>{
       const token = localStorage.getItem('auth_token');
       if (!token) throw new Error('No token found');
 
-      const response = await axios.get('http://localhost:8000/api/month-disease-data', {
+      const response = await axios.get(`${API_URL}/month-disease-data`, {
           headers: {
             Authorization: `Bearer ${token}`
           },

@@ -26,7 +26,14 @@ const routes: RouteRecordRaw[] = [
       // Posts routes
       { path: 'posts/', component: () => import('pages/IndexPage.vue'), name:'posts' },
       {path: 'posts/:id', name:'post', component: ()=> import('pages/PostPage.vue') },
-      {path: 'posts/create', name:'createPost', component: ()=> import('pages/CreatePostForm.vue') }
+      {path: 'posts/create', name:'createPost', component: ()=> import('pages/CreatePostForm.vue') },
+      
+      // E-Pharmacy routes
+      { path: 'pharmacy', name: 'pharmacy', component: () => import('pages/EPharmacyPage.vue') },
+      { path: 'pharmacy/:slug', name: 'productDetails', component: () => import('pages/ProductDetails.vue') },
+      { path: 'checkout', name: 'checkout', component: () => import('pages/CheckoutPage.vue') },
+      { path: 'payment/callback', name: 'paymentCallback', component: () => import('pages/PaymentCallbackPage.vue') },
+      { path: 'orders/:id/status', name: 'orderStatus', component: () => import('pages/OrderStatusPage.vue') }
     ],
   },
     {
