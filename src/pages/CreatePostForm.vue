@@ -1,6 +1,5 @@
 <template>
   <h1 class="text-center font-bold text-2xl mt-10">Create Your Post</h1>
-<center>
   <form class="p-5 gap-5 grid" style="height: 90vh; width: 70vw" v-if="!processing">
     <q-input v-model="title" label="Title" hint="Your title should be unique" counter
     :rules="[
@@ -109,35 +108,35 @@
       v-model="disease"
       :options="diseases"
       option-label="name"
+      option-value="id"
       label="Select Disease"
       class="mb-8"
       outlined
       :rules="[
         val => !!val ||'Please select a disease',
         ]"
+      emit-value
+      map-options
     />
 
-    <center>
-      <q-file
-        style="max-width: 300px"
-        v-model="thumbnail"
-        label="upload thumbnails"
-        accept=".jpg, image/*"
-        @rejected="onRejected"
-          >
-        <!-- image icon -->
-        <template v-slot:prepend>
-          <q-icon name="image" />
-        </template>
-      </q-file>
-      <q-btn class="self-center" color="primary mt-5 mb-5" label="Submit" @click="submitPost" />
-      <div>
-        <q-img :src="imageSrc" :ratio="16 / 9" class="block max-w-md" />
-      </div>
-    </center>
+    <q-file
+      style="max-width: 300px"
+      v-model="thumbnail"
+      label="upload thumbnails"
+      accept=".jpg, image/*"
+      @rejected="onRejected"
+    >
+      <!-- image icon -->
+      <template v-slot:prepend>
+        <q-icon name="image" />
+      </template>
+    </q-file>
+    <q-btn class="self-center" color="primary mt-5 mb-5" label="Submit" @click="submitPost" />
+    <div>
+      <q-img :src="imageSrc" :ratio="16 / 9" class="block max-w-md" />
+    </div>
   </form>
   <q-spinner-gears color="cyan" size="500" v-if="processing"/>
-</center>
 </template>
 
 <script setup lan="ts">
@@ -160,16 +159,27 @@ globalStore.showSearch = false;
 const qeditor = ref('default text');
 const title = ref('');
 const excerpt = ref('');
-const disease = ref('');
+const disease = ref(null); // should be null, not ''
 const thumbnail = ref(null);
 const processing = ref(false);
 const router = useRouter();
 
 
 
+
 const fetchDiseases = async () => {
-  diseases.value = await diseaseStore.fetchDiseases();
-  console.log(diseases.value);
+  await diseaseStore.fetchDiseases();
+  diseases.value = diseaseStore.diseases;
+  console.log('diseases.value:', diseases.value);
+  console.log('typeof diseases.value:', typeof diseases.value);
+  if (Array.isArray(diseases.value)) {
+    console.log('diseases.value is an array, length:', diseases.value.length);
+    if (diseases.value.length > 0) {
+      console.log('First disease object:', diseases.value[0]);
+    }
+  } else {
+    console.log('diseases.value is not an array:', diseases.value);
+  }
 };
 fetchDiseases();
 
@@ -179,8 +189,11 @@ const submitPost = async () => {
   formData.append('title', title.value);
   formData.append('excerpt', excerpt.value);
   formData.append('body', qeditor.value);
-  formData.append('disease', disease.value);
-  formData.append('disease_id', Number(disease.value.id));
+  if (disease.value) {
+    const diseaseIdNum = Number(disease.value);
+    console.log('About to append disease_id:', diseaseIdNum, 'type:', typeof diseaseIdNum);
+    formData.append('disease_id', diseaseIdNum);
+  }
   formData.append('thumbnail', thumbnail.value);
   console.log(formData);
 

@@ -347,6 +347,41 @@ export const useAuthStore = defineStore('auth', () => {
     }
   };
 
+  // Delete Post
+  const deletePost = async (postId: number|string) => {
+    loading.value = true;
+    validationErrors.value = null;
+    try {
+      const token = localStorage.getItem('auth_token');
+      if (!token) throw new Error('No token found');
+      await axios.delete(`${API_URL}/posts/${postId}/destroy`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      message.value.name = 'Post deleted successfully.';
+      message.value.success = true;
+    } catch (error) {
+      const axiosErr = error as AxiosError;
+      const data = axiosErr.response?.data as Data;
+      const errors = data?.errors as Errors;
+      validationErrors.value = errors;
+      if (data?.message) {
+        message.value.name = data.message;
+        message.value.success = false;
+      } else {
+        message.value.name = axiosErr.message || 'Network error occurred';
+        message.value.success = false;
+      }
+    } finally {
+      loading.value = false;
+      Notify.create({
+        message: message.value.name,
+        color: message.value.success ? 'green' : 'red',
+      });
+    }
+  };
+
   return {
     user,
     loading,
@@ -361,7 +396,8 @@ export const useAuthStore = defineStore('auth', () => {
     fetchPatients,
     patients,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    deletePost
   };
 });
 

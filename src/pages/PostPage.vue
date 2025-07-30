@@ -16,9 +16,19 @@
           flat
           round
         />
-        <h1 class="font-semibold text-2xl uppercase mb-10">
-          {{ postStore.post?.title }}
-        </h1>
+        <div class="flex items-center mb-10">
+          <h1 class="font-semibold text-2xl uppercase flex-1">
+            {{ postStore.post?.title }}
+          </h1>
+          <q-btn
+            v-if="authStore.user && postStore.post && authStore.user.id === postStore.post.writer.id"
+            color="negative"
+            icon="delete"
+            label="Delete"
+            class="ml-4"
+            @click="handleDeletePost"
+          />
+        </div>
         <div v-html="postStore.post?.body" class="max-w-md"></div>
 
         <div class="mt-10">
@@ -111,6 +121,14 @@ const showComments = ref(false);
 function toggleCommentShow() {
   showComments.value = !showComments.value;
 }
+
+const handleDeletePost = () => {
+  if (postStore.post?.id) {
+    authStore.deletePost(postStore.post.id).then(() => {
+      router.push('/posts');
+    });
+  }
+};
 
 onMounted(() => {
   postStore.fetchPost(Number(router.currentRoute.value.params.id));

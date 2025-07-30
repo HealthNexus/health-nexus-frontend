@@ -32,10 +32,10 @@ export interface Drug{
   const fetchDiseases = async () => {
     try{
       const response = await axios.get(`${API_URL}/diseases`);
-      diseases.value = response.data.data;
+      diseases.value = response.data.disease;
       return diseases.value;
     }catch(error){
-      console.log(error)
+      // Optionally handle error
     }
   }
 
