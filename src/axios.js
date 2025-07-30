@@ -1,9 +1,10 @@
 // src/axios.js
 import axios from 'axios';
-const DEV_SERVER = 'http://localhost:8000'; // Replace with your Laravel backend URL for development
+// const DEV_SERVER = 'http://localhost:8000'; // Replace with your Laravel backend URL for development
+const PRODUCTION_SERVER = 'https://d288cad925bd.ngrok-free.app';
 // Create an instance of axios
 const axiosInstance = axios.create({
-  baseURL: DEV_SERVER, // Replace with your Laravel backend URL
+  baseURL: PRODUCTION_SERVER, // Replace with your Laravel backend URL
   withCredentials: false // Don't send cookies, we use Bearer tokens
 });
 

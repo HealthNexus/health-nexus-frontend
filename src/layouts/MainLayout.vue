@@ -136,6 +136,24 @@
           </q-item-section>
         </q-item>
 
+        <!-- Admin Order Analytics -->
+        <q-item clickable v-ripple v-if="authStore.loggedIn && authStore.user.role.slug == 'admin'" :to="{ name: 'admin.order.analytics' }">
+          <q-item-section class="flex flex-row gap-5 justify-start">
+            <q-item-label class="capitalize">Order Analytics</q-item-label>
+            <q-icon name="insights" class="text-black" />
+          </q-item-section>
+        </q-item>
+
+        <!-- Admin Order List -->
+        <q-item clickable v-ripple v-if="authStore.loggedIn && authStore.user.role.slug == 'admin'" :to="{ name: 'admin.orders.list' }">
+          <q-item-section class="flex flex-row gap-5 justify-start">
+            <q-item-label class="capitalize">Order List</q-item-label>
+            <q-icon name="list" class="text-black" />
+          </q-item-section>
+        </q-item>
+
+        <!-- Orders Requiring Attention removed -->
+
       </q-list>
     </q-drawer>
 

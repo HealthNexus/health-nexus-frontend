@@ -35,6 +35,10 @@ const routes: RouteRecordRaw[] = [
       // { path: 'blogs', name:'Blog', component: () => import('src/pages/BlogTest.vue') },
       { path: 'record/create', name:'record.create', component: () => import('src/pages/CreateRecordPage.vue') },
       { path: 'analytics/general', name:'general.analytics', component: () => import('src/pages/GeneralAnalyticsPage.vue') },
+      { path: 'admin/orders/analytics', name: 'admin.order.analytics', component: () => import('pages/AdminOrderAnalyticsPage.vue') },
+      // { path: 'admin/orders/requires-attention', name: 'admin.orders.requiresAttention', component: () => import('pages/AdminOrdersRequiresAttentionPage.vue') },
+      { path: 'admin/orders', name: 'admin.orders.list', component: () => import('pages/AdminOrderListPage.vue') },
+      { path: 'admin/orders/:order', name: 'admin.order.details', component: () => import('pages/AdminOrderDetailsPage.vue') },
       // Posts routes
       { path: 'posts/', component: () => import('pages/IndexPage.vue'), name:'posts' },
       {path: 'posts/:id', name:'post', component: ()=> import('pages/PostPage.vue') },
