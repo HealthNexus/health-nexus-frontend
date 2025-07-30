@@ -282,6 +282,71 @@ export const useAuthStore = defineStore('auth', () => {
      }
   }
 
+
+
+  // Forgot Password
+  const forgotPassword = async (email: string) => {
+    loading.value = true;
+    validationErrors.value = null;
+    try {
+      const response = await axios.post(`${API_URL}/password/forgot`, { email });
+      message.value.name = response.data.message || 'If your email exists in our system, a reset link has been sent.';
+      message.value.success = true;
+    } catch (error) {
+      const axiosErr = error as AxiosError;
+      const data = axiosErr.response?.data as Data;
+      const errors = data?.errors as Errors;
+      validationErrors.value = errors;
+      if (data?.message) {
+        message.value.name = data.message;
+        message.value.success = false;
+      } else {
+        message.value.name = axiosErr.message || 'Network error occurred';
+        message.value.success = false;
+      }
+    } finally {
+      loading.value = false;
+      Notify.create({
+        message: message.value.name,
+        color: message.value.success ? 'green' : 'red',
+      });
+    }
+  };
+
+  // Reset Password
+  const resetPassword = async (token: string, email: string, password: string, password_confirmation: string) => {
+    loading.value = true;
+    validationErrors.value = null;
+    try {
+      const response = await axios.post(`${API_URL}/password/reset`, {
+        token,
+        email,
+        password,
+        password_confirmation
+      });
+      message.value.name = response.data.message || 'Password reset successful.';
+      message.value.success = true;
+    } catch (error) {
+      const axiosErr = error as AxiosError;
+      const data = axiosErr.response?.data as Data;
+      const errors = data?.errors as Errors;
+      validationErrors.value = errors;
+      if (data?.message) {
+        message.value.name = data.message;
+        message.value.success = false;
+      } else {
+        message.value.name = axiosErr.message || 'Network error occurred';
+        message.value.success = false;
+      }
+    } finally {
+      loading.value = false;
+      Notify.create({
+        message: message.value.name,
+        color: message.value.success ? 'green' : 'red',
+      });
+    }
+  };
+
   return {
     user,
     loading,
@@ -294,8 +359,9 @@ export const useAuthStore = defineStore('auth', () => {
     message,
     fetchHospitals,
     fetchPatients,
-    patients
-
+    patients,
+    forgotPassword,
+    resetPassword
   };
 });
 

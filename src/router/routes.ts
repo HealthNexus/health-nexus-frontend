@@ -7,10 +7,20 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/MainLayout.vue'),
     beforeEnter: (to, from, next) => {
       const authStore = useAuthStore();
-      if (authStore.loggedIn && (to.name === 'signin' || to.name === 'signup')) {
-        next({name: from.name || 'home'})
+      // Allow unauthenticated access to forgot-password and reset-password
+      if (
+        authStore.loggedIn &&
+        (to.name === 'signin' || to.name === 'signup')
+      ) {
+        next({ name: from.name || 'home' });
+      } else if (
+        authStore.loggedIn &&
+        (to.name === 'forgot-password' || to.name === 'reset-password')
+      ) {
+        // If already logged in, allow access to password reset routes (or optionally redirect)
+        next();
       } else {
-        next()
+        next();
       }
     },
     children: [
@@ -18,6 +28,8 @@ const routes: RouteRecordRaw[] = [
       { path: 'signup', name:'signup', component: () => import('pages/signUpPage.vue') },
       { path: 'signin', name:'signin', component: () => import('pages/signInPage.vue') },
       { path: 'test', name:'test', component: () => import('pages/TestPage.vue') },
+      { path: 'forgot-password', name: 'forgot-password', component: () => import('pages/ForgotPasswordPage.vue') },
+      { path: 'reset-password', name: 'reset-password', component: () => import('pages/ResetPasswordPage.vue') },
       { path: 'records', name:'records', component: () => import('pages/RecordsPage.vue') },
       { path: 'landing', name:'Landing', component: () => import('src/pages/LandingPage.vue') },
       // { path: 'blogs', name:'Blog', component: () => import('src/pages/BlogTest.vue') },

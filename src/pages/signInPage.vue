@@ -10,7 +10,7 @@
         bottom-slots
         :error="authStore.validationErrors?.email ? true: false"
         :rules="[
-          val => !!val || 'Email field is required',
+            (val: string) => !!val || 'Email field is required',
           ]"
           :disable="authStore.loading"
         >
@@ -36,7 +36,7 @@
           bottom-slots
           :error="authStore.validationErrors?.password ? true: false"
           :rules="[
-            val => !!val || 'Password field is required',
+            (val: string) => !!val || 'Password field is required',
             ]"
           :disable="authStore.loading"
           >
@@ -59,7 +59,7 @@
         <div class="flex justify-between hover:text-semibold">
           <q-checkbox v-model="remember_me" label="Remember me" />
          <div class="flex content-center justify-center">
-          <a href="#">Forgot Password?</a>
+          <router-link :to="{ name: 'forgot-password' }" class="text-blue-700 hover:text-blue-900">Forgot Password?</router-link>
          </div>
         </div>
 
