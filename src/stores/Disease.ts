@@ -63,7 +63,7 @@ export interface Drug{
           Authorization: `Bearer ${token}`
         },
       });
-      drugs.value = response.data.drugs;
+      drugs.value = response.data.data;
     }catch(error){
       console.log(error)
     }

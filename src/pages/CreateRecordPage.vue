@@ -120,22 +120,22 @@ const loading = ref(false);
 
 const filteredUsers = computed(() => {
   const regex = new RegExp(userSearch.value, 'i');
-  return patients.value.filter((patient) => regex.test(patient.name));
+  return (patients.value || []).filter((patient) => regex.test(patient.name));
 });
 
 const filteredDiseases = computed(() => {
   const regex = new RegExp(diseaseSearch.value, 'i');
-  return diseases.value.filter((disease) => regex.test(disease.name));
+  return (diseases.value || []).filter((disease) => regex.test(disease.name));
 });
 
 const filteredSymptoms = computed(() => {
   const regex = new RegExp(symptomSearch.value, 'i');
-  return symptoms.value.filter((symptom) => regex.test(symptom.description));
+  return (symptoms.value || []).filter((symptom) => regex.test(symptom.description));
 });
 
 const filteredDrugs = computed(() => {
   const regex = new RegExp(drugSearch.value, 'i');
-  return drugs.value.filter((drug) => regex.test(drug.name));
+  return (drugs.value || []).filter((drug) => regex.test(drug.name));
 });
 
 // log form data
@@ -170,14 +170,14 @@ const createRecord = async () => {
 onMounted(async () => {
   loading.value = true;
   await authStore.fetchPatients();
-  patients.value = authStore.patients;
+  patients.value = authStore.patients || [];
   await diseaseStore.fetchDiseases();
-  diseases.value = diseaseStore.diseases;
+  diseases.value = diseaseStore.diseases || [];
 
   await diseaseStore.fetchSymptoms();
-  symptoms.value = diseaseStore.symptoms;
+  symptoms.value = diseaseStore.symptoms || [];
   await diseaseStore.fetchDrugs();
-  drugs.value = diseaseStore.drugs;
+  drugs.value = diseaseStore.drugs || [];
   loading.value = false;
 });
 </script>
