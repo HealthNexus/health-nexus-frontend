@@ -144,11 +144,20 @@
           </q-item-section>
         </q-item>
 
+
         <!-- Admin Order List -->
         <q-item clickable v-ripple v-if="authStore.loggedIn && authStore.user.role.slug == 'admin'" :to="{ name: 'admin.orders.list' }">
           <q-item-section class="flex flex-row gap-5 justify-start">
             <q-item-label class="capitalize">Order List</q-item-label>
             <q-icon name="list" class="text-black" />
+          </q-item-section>
+        </q-item>
+
+        <!-- Admin Add Drug -->
+        <q-item clickable v-ripple v-if="authStore.loggedIn && authStore.user.role.slug == 'admin'" :to="{ name: 'admin.drugs.add' }">
+          <q-item-section class="flex flex-row gap-5 justify-start">
+            <q-item-label class="capitalize">Add Drug</q-item-label>
+            <q-icon name="add" class="text-black" />
           </q-item-section>
         </q-item>
 

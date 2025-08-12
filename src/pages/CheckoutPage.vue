@@ -652,12 +652,6 @@ const paymentOptions = [
     icon: 'payment',
     description: 'Secure payment with multiple options'
   },
-  { 
-    label: 'Credit/Debit Card', 
-    value: 'card',
-    icon: 'credit_card',
-    description: 'Direct card payment'
-  }
 ];
 
 // Enhanced validation rules with real-time feedback

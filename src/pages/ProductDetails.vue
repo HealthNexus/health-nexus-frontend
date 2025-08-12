@@ -22,6 +22,9 @@
         <q-breadcrumbs-el :label="drug.name" />
       </q-breadcrumbs>
 
+      <div v-if="isAdminOrDoctor" class="q-mb-md" style="text-align: right;">
+        <q-btn color="negative" icon="delete" label="Delete Drug" @click="deleteDrug" />
+      </div>
       <div class="row q-col-gutter-lg q-pa-md">
         <!-- Product Image -->
         <div class="col-12 col-md-6">
@@ -239,18 +242,49 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { usePharmacyStore } from '../stores/pharmacy';
 import { Drug } from '../services/pharmacyService';
 import { CartDrawer } from '../components';
+import axios from '../axios.js';
+import { isAxiosError } from 'axios';
+import { useAuthStore } from '../stores/auth';
 
 // Composables
 const route = useRoute();
 const router = useRouter();
 const $q = useQuasar();
 const pharmacyStore = usePharmacyStore();
+const authStore = useAuthStore();
+const isAdminOrDoctor = computed(() => {
+  const roleSlug = authStore.user?.role?.slug;
+  return roleSlug === 'admin' || roleSlug === 'doctor';
+});
+// Delete Drug API call
+const deleteDrug = async () => {
+  if (!drug.value) return;
+  const drugId = drug.value.id;
+  $q.dialog({
+    title: 'Delete Drug',
+    message: `Are you sure you want to delete "${drug.value.name}"? This action cannot be undone.`,
+    cancel: true,
+    persistent: true
+  }).onOk(async () => {
+    try {
+      await axios.delete(`/api/admin/drugs/${drugId}`);
+      $q.notify({ type: 'positive', message: 'Drug deleted successfully', position: 'top' });
+      router.push({ name: 'pharmacy' });
+    } catch (err: unknown) {
+      if (isAxiosError(err) && err.response?.status === 403) {
+        $q.notify({ type: 'negative', message: 'Unauthorized: You do not have permission to delete this drug.' });
+      } else {
+        $q.notify({ type: 'negative', message: 'Failed to delete drug.' });
+      }
+    }
+  });
+};
 
 // Local state
 const drug = ref<Drug | null>(null);

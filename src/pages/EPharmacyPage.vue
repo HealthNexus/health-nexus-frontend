@@ -25,18 +25,7 @@
           </q-input>
         </div>
         
-        <div class="col-12 col-md-3">
-          <q-select
-            v-model="selectedCategory"
-            :options="categoryOptions"
-            label="Category"
-            dense
-            outlined
-            clearable
-            emit-value
-            map-options
-          />
-        </div>
+
         
         <div class="col-12 col-md-3">
           <q-btn
@@ -92,7 +81,7 @@
     </div>
 
     <!-- Empty State -->
-    <div v-else-if="pharmacyStore.filteredDrugs?.length === 0" class="text-center q-pa-xl">
+    <div v-else-if="filteredDrugs.length === 0" class="text-center q-pa-xl">
       <q-icon name="medication" size="50px" color="grey-5" />
       <p class="text-grey-7 q-mt-md">No medications found</p>
       <q-btn color="primary" label="Clear Filters" outline @click="resetFilters" />
@@ -102,7 +91,7 @@
     <div v-else-if="authStore.loggedIn">
       <div class="grid grid-cols-3 gap-2">
         <q-card
-          v-for="drug in (pharmacyStore.filteredDrugs || [])"
+          v-for="drug in filteredDrugs"
           :key="drug.id"
           class="col-12 col-sm-6 col-md-4 col-lg-3 rounded-card cursor-pointer"
           @click.prevent="goToDetails(drug.slug)"
@@ -199,6 +188,7 @@ import { useQuasar } from 'quasar';
 import { usePharmacyStore } from '../stores/pharmacy';
 import { useAuthStore } from '../stores/auth';
 import { Drug } from '../services/pharmacyService';
+
 import { CartDrawer } from '../components';
 
 const router = useRouter();
@@ -209,13 +199,22 @@ const authStore = useAuthStore();
 // Local state
 const showCart = ref(false);
 const searchQuery = ref('');
-const selectedCategory = ref('');
 
-// Computed properties
-const categoryOptions = computed(() => [
-  { label: 'All Categories', value: '' },
-  ...(pharmacyStore.categories || []).map(cat => ({ label: cat, value: cat }))
-]);
+
+// Computed: Filtered drugs (frontend only)
+const filteredDrugs = computed(() => {
+  let drugs = pharmacyStore.drugs || [];
+  // Filter by search query
+  if (searchQuery.value.trim()) {
+    const q = searchQuery.value.trim().toLowerCase();
+    drugs = drugs.filter(drug =>
+      drug.name.toLowerCase().includes(q) ||
+      (drug.description && drug.description.toLowerCase().includes(q)) ||
+      (drug.category && drug.category.toLowerCase().includes(q))
+    );
+  }
+  return drugs;
+});
 
 // Enhanced notification methods
 const notifySuccess = (message: string) => {
@@ -256,7 +255,6 @@ const goToDetails = (slug: string) => {
 const addToCart = async (drug: Drug) => {
   try {
     pharmacyStore.addToCart(drug);
-    
     // Show quick action in notification
     $q.notify({
       type: 'positive',
@@ -283,8 +281,7 @@ const addToCart = async (drug: Drug) => {
 };
 
 const onSearchInput = () => {
-  pharmacyStore.setSearchQuery(searchQuery.value);
-  
+  // No backend call, filtering is local
   // Provide feedback for search
   if (searchQuery.value.length > 2) {
     notifyInfo(`Searching for "${searchQuery.value}"...`);
@@ -293,8 +290,6 @@ const onSearchInput = () => {
 
 const resetFilters = () => {
   searchQuery.value = '';
-  selectedCategory.value = '';
-  pharmacyStore.resetFilters();
   notifyInfo('Filters cleared');
 };
 
@@ -302,14 +297,6 @@ const truncateDescription = (description: string, maxLength = 100) => {
   if (description.length <= maxLength) return description;
   return description.substring(0, maxLength) + '...';
 };
-
-// Watchers for better UX
-watch(selectedCategory, (newCategory) => {
-  pharmacyStore.setSelectedCategory(newCategory);
-  if (newCategory) {
-    notifyInfo(`Filtering by ${newCategory}`);
-  }
-});
 
 // Watch for store errors and show notifications
 watch(() => pharmacyStore.error, (newError) => {
@@ -510,26 +497,21 @@ onMounted(async () => {
 
 .q-card-actions {
   padding: 1rem 1.5rem 1.5rem;
-  
   .q-btn {
     border-radius: 12px;
     font-weight: 600;
     transition: all 0.3s ease;
-    
     &.q-btn--unelevated {
       background: linear-gradient(135deg, #1976d2, #1565c0);
-      
       &:hover {
         background: linear-gradient(135deg, #1565c0, #0d47a1);
         transform: translateY(-2px);
         box-shadow: 0 8px 25px rgba(25, 118, 210, 0.3);
       }
     }
-    
     &.q-btn--outline {
       border: 2px solid #1976d2;
       color: #1976d2;
-      
       &:hover {
         background: #1976d2;
         color: white;
@@ -537,7 +519,6 @@ onMounted(async () => {
         box-shadow: 0 8px 25px rgba(25, 118, 210, 0.2);
       }
     }
-    
     &:disabled {
       background: #e2e8f0;
       color: #94a3b8;
@@ -546,62 +527,14 @@ onMounted(async () => {
       box-shadow: none;
     }
   }
-  
   @media (max-width: 600px) {
     padding: 1rem;
-    
     .q-btn {
       width: 100%;
       margin-bottom: 0.5rem;
-      
       &:last-child {
         margin-bottom: 0;
       }
-    }
-  }
-}
-
-.cart-fab {
-  box-shadow: 0 8px 32px rgba(25, 118, 210, 0.3);
-  background: linear-gradient(135deg, #1976d2, #1565c0);
-  
-  &:hover {
-    box-shadow: 0 12px 40px rgba(25, 118, 210, 0.4);
-    transform: scale(1.05);
-  }
-}
-
-.rounded-card {
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
-// Loading states
-.loading-card {
-  background: white;
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  
-  .loading-shimmer {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    border-radius: 8px;
-    height: 1rem;
-    margin-bottom: 0.5rem;
-    
-    &.image {
-      height: 160px;
-      margin-bottom: 1rem;
-    }
-    
-    &.short {
-      width: 60%;
-    }
-    
-    &.medium {
-      width: 80%;
     }
   }
 }

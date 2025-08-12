@@ -39,6 +39,7 @@ const routes: RouteRecordRaw[] = [
       // { path: 'admin/orders/requires-attention', name: 'admin.orders.requiresAttention', component: () => import('pages/AdminOrdersRequiresAttentionPage.vue') },
       { path: 'admin/orders', name: 'admin.orders.list', component: () => import('pages/AdminOrderListPage.vue') },
       { path: 'admin/orders/:order', name: 'admin.order.details', component: () => import('pages/AdminOrderDetailsPage.vue') },
+      { path: 'admin/drugs/add', name: 'admin.drugs.add', component: () => import('pages/AdminAddDrugPage.vue') },
       // Posts routes
       { path: 'posts/', component: () => import('pages/IndexPage.vue'), name:'posts' },
       {path: 'posts/:id', name:'post', component: ()=> import('pages/PostPage.vue') },
