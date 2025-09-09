@@ -45,26 +45,6 @@
             </ul>
           </div>
         </div>
-        <div
-          class="mt-10"
-          v-if="
-            authStore.user?.role.slug == 'admin' ||
-            authStore.user?.role.slug == 'doctor'
-          "
-        >
-          <h1 class="text-xl font-bold mb-10">Related Drugs</h1>
-          <div>
-            <ul>
-              <li
-                v-for="drug in postStore.post?.disease.drugs"
-                :key="drug.id"
-                class="list-disc"
-              >
-                {{ drug.name }}
-              </li>
-            </ul>
-          </div>
-        </div>
       </div>
     </div>
 
